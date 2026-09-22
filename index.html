@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f5d68">
+  <title>Apports alimentaires inégaux — Géographie CM1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <div class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</div>
+        <h1>Mission : comprendre les apports alimentaires inégaux</h1>
+        <p>Trois étapes pour comprendre les calories, comparer quatre journées alimentaires et repérer des situations de sous-nutrition ou de malnutrition.</p>
+      </div>
+      <img class="hero__art" src="assets/globe-energy.svg" alt="Globe et symbole d’énergie">
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="mission-board" aria-label="Progression">
+      <button class="stage-tab is-active" data-stage="1" aria-current="step">
+        <span class="stage-tab__num">1</span>
+        <span><strong>Le labo des calories</strong><small>Comprendre les mots-clés</small></span>
+        <span class="stage-tab__status" data-status="1">À faire</span>
+      </button>
+      <button class="stage-tab" data-stage="2" disabled>
+        <span class="stage-tab__num">2</span>
+        <span><strong>Le compteur d’énergie</strong><small>Calculer les apports</small></span>
+        <span class="stage-tab__status" data-status="2">Verrouillé</span>
+      </button>
+      <button class="stage-tab" data-stage="3" disabled>
+        <span class="stage-tab__num">3</span>
+        <span><strong>Le diagnostic</strong><small>Comparer les situations</small></span>
+        <span class="stage-tab__status" data-status="3">Verrouillé</span>
+      </button>
+    </section>
+
+    <section class="rule-card" aria-label="Règle du jeu">
+      <div class="rule-card__icon">✓</div>
+      <div>
+        <strong>Pour valider une étape :</strong> réussis-la entièrement sans erreur au cours d’une même tentative, puis clique sur <b>Vérifier</b>. Si tu te trompes, corrige pour apprendre, puis recommence l’étape pour obtenir la validation.
+      </div>
+    </section>
+
+    <section id="stage-1" class="game-stage" data-stage-panel="1">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 1</p>
+          <h2>Le labo des calories</h2>
+          <p>Choisis la bonne réponse pour chaque question.</p>
+        </div>
+        <img src="assets/plate.svg" alt="Assiette et aliments" class="stage-heading__art">
+      </div>
+
+      <aside class="source-card">
+        <h3>Repères du document</h3>
+        <div class="source-grid">
+          <div><span class="source-big">≈ 2 000</span><span>calories par jour pour un enfant de 9 ans</span></div>
+          <div><strong>Sous-nutrition</strong><span>Ne pas manger assez pour vivre correctement.</span></div>
+          <div><strong>Malnutrition</strong><span>Avoir une alimentation déséquilibrée.</span></div>
+        </div>
+      </aside>
+
+      <div id="quiz-area" class="question-list"></div>
+      <div class="actions">
+        <button class="btn btn--primary" id="check-1">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-1">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-1" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-2" class="game-stage is-hidden" data-stage-panel="2">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 2</p>
+          <h2>Le compteur d’énergie</h2>
+          <p>Additionne les calories de toute la journée pour chaque enfant.</p>
+        </div>
+        <div class="meter-art" aria-hidden="true"><span>2000</span></div>
+      </div>
+
+      <aside class="source-card source-card--compact">
+        <h3>Rappel</h3>
+        <p>Les calories mesurent l’énergie apportée par les aliments. Le document indique qu’un enfant de 9 ans a besoin d’environ <strong>2 000 calories par jour</strong>.</p>
+      </aside>
+
+      <div id="calc-area" class="country-grid"></div>
+      <div class="actions">
+        <button class="btn btn--primary" id="check-2">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-2">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-2" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-3" class="game-stage is-hidden" data-stage-panel="3">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 3</p>
+          <h2>Le diagnostic</h2>
+          <p>Appuie sur les pays qui correspondent à chaque situation. Tu peux changer ton choix avant de vérifier.</p>
+        </div>
+        <div class="diagnostic-art" aria-hidden="true">?</div>
+      </div>
+
+      <div class="definition-strip">
+        <div><strong>Sous-nutrition</strong><span>Pas assez de calories pour vivre correctement.</span></div>
+        <div><strong>Malnutrition</strong><span>Alimentation déséquilibrée : trop ou pas assez de certains aliments.</span></div>
+      </div>
+
+      <div class="totals-strip" id="totals-strip"></div>
+
+      <div class="diagnostic-question" data-diagnostic="undernutrition">
+        <h3>Quels pays sont en situation de sous-nutrition dans ces exemples ?</h3>
+        <div class="choice-chips" id="chips-undernutrition"></div>
+      </div>
+
+      <div class="diagnostic-question" data-diagnostic="malnutrition">
+        <h3>Quel pays présente une situation de malnutrition dans cet exemple ?</h3>
+        <div class="choice-chips" id="chips-malnutrition"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-3">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-3">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-3" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="final-card" class="final-card is-hidden" aria-live="polite">
+      <div class="final-card__badge">★</div>
+      <div>
+        <p class="kicker">MISSION RÉUSSIE</p>
+        <h2>Bravo ! Les trois étapes sont validées.</h2>
+        <p>Tu as réussi chaque étape sans erreur au cours d’une même tentative.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Géographie CM1 · Se nourrir · Apports alimentaires inégaux</footer>
+  <script src="app.js"></script>
+</body>
+</html>
