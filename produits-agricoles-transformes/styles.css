@@ -39,25 +39,121 @@ h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-wi
 @media(max-width:390px){.stage-heading{grid-template-columns:1fr}.stage-heading__art,.pair-art,.recipe-art{display:none}.food-bank,.sort-bin__content{grid-template-columns:repeat(2,1fr)}.text-chips,.mini-food-grid{grid-template-columns:1fr}}
 
 
-/* Étape 1 — version 3 : zones de classement dimensionnées pour 10 aliments chacune */
-.sort-bin{display:flex;flex-direction:column;min-height:330px;height:auto;overflow:visible}
-.sort-bin__title{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
-.bin-count{font-size:.78rem;font-weight:900;color:var(--teal);background:var(--teal-soft);padding:5px 8px;border-radius:999px;white-space:nowrap}
-.drop-hint{margin-top:10px;padding:9px 10px;border-radius:10px;background:#eef8f7;color:var(--teal);font-size:.78rem;font-weight:900;text-align:center;border:1px solid #cfe6e3}
-.sort-bin__content{grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;min-height:250px;overflow:visible}
-.food-card--placed{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:center;text-align:left;min-height:60px;padding:6px 8px}
-.food-card--placed img{width:48px;height:48px;aspect-ratio:auto;object-fit:contain}
-.food-card--placed span{font-size:.76rem;text-align:left;overflow-wrap:anywhere}
+
+/* Étape 1 — version 4 : zones sans limite de 6, elles grandissent selon le contenu */
+.sort-bin{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  height:auto;
+  overflow:visible;
+}
+.sort-bin__title{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:10px;
+  align-items:center;
+}
+.bin-count{
+  font-size:.78rem;
+  font-weight:900;
+  color:var(--teal);
+  background:var(--teal-soft);
+  padding:5px 8px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.drop-hint{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background:#eef8f7;
+  color:var(--teal);
+  font-size:.78rem;
+  font-weight:900;
+  text-align:center;
+  border:1px solid #cfe6e3;
+  flex:0 0 auto;
+}
+/* Pas de hauteur maximale : 10 cartes, ou davantage, peuvent être affichées */
+.sort-bin__content{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(96px,1fr));
+  gap:8px;
+  align-content:start;
+  min-height:0;
+  height:auto;
+  max-height:none;
+  overflow:visible;
+  padding-top:12px;
+}
+.food-card--placed{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  min-height:92px;
+  padding:7px;
+  text-align:center;
+}
+.food-card--placed img{
+  width:54px;
+  height:54px;
+  aspect-ratio:auto;
+  object-fit:contain;
+}
+.food-card--placed span{
+  font-size:.72rem;
+  line-height:1.1;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+@media(max-width:900px){
+  .sort-bin__content{grid-template-columns:repeat(auto-fit,minmax(86px,1fr))}
+}
+@media(max-width:620px){
+  .sort-bin__content{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .food-card--placed{min-height:74px;display:grid;grid-template-columns:40px minmax(0,1fr);text-align:left}
+  .food-card--placed img{width:40px;height:40px}
+  .food-card--placed span{text-align:left;font-size:.71rem}
+  .bin-count{font-size:.72rem}
+}
+@media(max-width:340px){
+  .sort-bin__content{grid-template-columns:1fr}
+}
+
+/* V4b — dix emplacements visibles dans chaque catégorie */
+.sort-bin__content{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.sort-slot{
+  min-width:0;
+  min-height:96px;
+  border:1px dashed #c8ddda;
+  border-radius:12px;
+  background:rgba(255,255,255,.55);
+  display:grid;
+  place-items:center;
+  overflow:visible;
+}
+.sort-slot__empty{
+  color:#9bbeb9;
+  font-size:1.25rem;
+  font-weight:900;
+  opacity:.55;
+}
+.sort-slot .food-card{
+  width:100%;
+  height:100%;
+  margin:0;
+  box-shadow:none;
+}
 @media(max-width:900px){
   .sort-bin__content{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:620px){
-  .sort-bin{min-height:300px}
-  .sort-bin__content{grid-template-columns:repeat(2,minmax(0,1fr));min-height:220px}
-  .food-card--placed{grid-template-columns:42px minmax(0,1fr);min-height:54px}
-  .food-card--placed img{width:42px;height:42px}
-  .bin-count{font-size:.72rem}
-}
-@media(max-width:350px){
-  .sort-bin__content{grid-template-columns:1fr}
+  .sort-slot{min-height:70px}
 }

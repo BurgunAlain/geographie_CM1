@@ -42,6 +42,15 @@ function qs(sel, root=document){ return root.querySelector(sel); }
 function qsa(sel, root=document){ return [...root.querySelectorAll(sel)]; }
 function foodById(id){ return foods.find(f=>f.id===id); }
 
+function shuffleArray(items){
+  const a=[...items];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
 function markStageDone(stage){
   stageState[stage].validated=true;
   const tab=qs(`[data-stage="${stage}"]`);
@@ -85,6 +94,7 @@ function report(stage,type,text){
 let placements={};
 let selectedFood=null;
 foods.forEach(f=>placements[f.id]=null);
+let foodOrder=shuffleArray(foods.map(f=>f.id));
 
 function makeFoodCard(food, placed=false){
   const b=document.createElement('button');
@@ -114,16 +124,36 @@ function makeFoodCard(food, placed=false){
 function renderSort(){
   const bank=qs('#food-bank'), raw=qs('#bin-raw'), transformed=qs('#bin-transformed');
   bank.innerHTML=''; raw.innerHTML=''; transformed.innerHTML='';
-  let rawCount=0, transformedCount=0;
-  foods.forEach(food=>{
-    const placement=placements[food.id];
-    const card=makeFoodCard(food, placement!==null);
-    if(placement==='raw'){ raw.appendChild(card); rawCount++; }
-    else if(placement==='transformed'){ transformed.appendChild(card); transformedCount++; }
-    else bank.appendChild(card);
+
+  const rawIds=foodOrder.filter(id=>placements[id]==='raw');
+  const transformedIds=foodOrder.filter(id=>placements[id]==='transformed');
+
+  // Banque : seuls les aliments non classés apparaissent ici, dans l'ordre mélangé.
+  foodOrder.forEach(id=>{
+    const food=foodById(id);
+    if(placements[id]===null) bank.appendChild(makeFoodCard(food,false));
   });
-  qs('#count-raw').textContent=`${rawCount} / 10`;
-  qs('#count-transformed').textContent=`${transformedCount} / 10`;
+
+  // Chaque catégorie affiche TOUJOURS 10 emplacements visibles.
+  // On voit donc immédiatement qu'il y a de la place pour les 10 réponses.
+  function fillSlots(container, ids){
+    for(let i=0;i<10;i++){
+      const slot=document.createElement('div');
+      slot.className='sort-slot';
+      if(ids[i]){
+        slot.appendChild(makeFoodCard(foodById(ids[i]),true));
+      }else{
+        slot.innerHTML='<span class="sort-slot__empty" aria-hidden="true">+</span>';
+      }
+      container.appendChild(slot);
+    }
+  }
+
+  fillSlots(raw,rawIds);
+  fillSlots(transformed,transformedIds);
+
+  qs('#count-raw').textContent=`${rawIds.length} / 10`;
+  qs('#count-transformed').textContent=`${transformedIds.length} / 10`;
 }
 
 function moveSelectedTo(bin){
@@ -169,6 +199,7 @@ qs('#restart-1').addEventListener('click',()=>{
   stageState[1].hadError=false;
   selectedFood=null;
   foods.forEach(f=>placements[f.id]=null);
+  foodOrder=shuffleArray(foods.map(f=>f.id));
   clearFeedback(1);
   renderSort();
 });
@@ -176,8 +207,8 @@ qs('#restart-1').addEventListener('click',()=>{
 // ----- Étape 2 : associations -----
 let selectedRaw=null;
 let pairMap={}; // transformed -> raw
-const transformedOrder=['chocolat','farine','yaourt','compote','huile','carottes-rapees','confiture','puree'];
-const rawOrder=['carottes','cacao','pomme','tournesol','fraises','lait','ble','pommes-de-terre'];
+let transformedOrder=shuffleArray(pairs.map(p=>p.transformed));
+let rawOrder=shuffleArray(pairs.map(p=>p.raw));
 
 function rawInUse(rawId){ return Object.values(pairMap).includes(rawId); }
 function unpairByRaw(rawId){
@@ -260,6 +291,8 @@ qs('#check-2').addEventListener('click',()=>{
 qs('#restart-2').addEventListener('click',()=>{
   stageState[2].hadError=false;
   selectedRaw=null; pairMap={};
+  rawOrder=shuffleArray(pairs.map(p=>p.raw));
+  transformedOrder=shuffleArray(pairs.map(p=>p.transformed));
   clearFeedback(2); renderPairs();
 });
 
@@ -299,14 +332,14 @@ function renderChallenges(){
     challengeSelections[kind]=new Set();
     const cfg=challenges[kind], area=qs(cfg.container); area.innerHTML='';
     if(cfg.type==='text'){
-      cfg.options.forEach(opt=>{
+      shuffleArray(cfg.options).forEach(opt=>{
         const b=document.createElement('button');
         b.type='button'; b.className='text-chip'; b.dataset.id=opt.id; b.textContent=opt.label;
         b.addEventListener('click',()=>toggleChallenge(kind,opt.id,b));
         area.appendChild(b);
       });
     }else{
-      cfg.options.forEach(id=>{
+      shuffleArray(cfg.options).forEach(id=>{
         const f=foodById(id), b=document.createElement('button');
         b.type='button'; b.className='mini-food'; b.dataset.id=id;
         b.innerHTML=`<img src="${f.img}" alt="${f.name}"><span>${f.name}</span>`;
