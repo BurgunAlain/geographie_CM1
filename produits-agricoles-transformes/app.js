@@ -86,10 +86,10 @@ let placements={};
 let selectedFood=null;
 foods.forEach(f=>placements[f.id]=null);
 
-function makeFoodCard(food){
+function makeFoodCard(food, placed=false){
   const b=document.createElement('button');
   b.type='button';
-  b.className='food-card';
+  b.className=placed?'food-card food-card--placed':'food-card';
   b.dataset.food=food.id;
   b.innerHTML=`<img src="${food.img}" alt="${food.name}"><span>${food.name}</span>`;
   b.addEventListener('click',(e)=>{
@@ -114,12 +114,16 @@ function makeFoodCard(food){
 function renderSort(){
   const bank=qs('#food-bank'), raw=qs('#bin-raw'), transformed=qs('#bin-transformed');
   bank.innerHTML=''; raw.innerHTML=''; transformed.innerHTML='';
+  let rawCount=0, transformedCount=0;
   foods.forEach(food=>{
-    const card=makeFoodCard(food);
-    if(placements[food.id]==='raw') raw.appendChild(card);
-    else if(placements[food.id]==='transformed') transformed.appendChild(card);
+    const placement=placements[food.id];
+    const card=makeFoodCard(food, placement!==null);
+    if(placement==='raw'){ raw.appendChild(card); rawCount++; }
+    else if(placement==='transformed'){ transformed.appendChild(card); transformedCount++; }
     else bank.appendChild(card);
   });
+  qs('#count-raw').textContent=`${rawCount} / 10`;
+  qs('#count-transformed').textContent=`${transformedCount} / 10`;
 }
 
 function moveSelectedTo(bin){

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f5d68">
   <title>Produits agricoles et aliments transformés — Géographie CM1</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
   <header class="hero">
@@ -70,11 +70,13 @@
         </section>
         <div class="bins">
           <section class="sort-bin" data-bin="raw" tabindex="0" role="button" aria-label="Placer dans les produits agricoles ou bruts">
-            <div class="sort-bin__title"><span>🌱</span><strong>Produits agricoles<br><small>(ou bruts)</small></strong></div>
+            <div class="sort-bin__title"><span>🌱</span><strong>Produits agricoles<br><small>(ou bruts)</small></strong><span class="bin-count" id="count-raw">0 / 10</span></div>
+            <div class="drop-hint">Touchez ici pour placer l’aliment sélectionné</div>
             <div class="sort-bin__content" id="bin-raw"></div>
           </section>
           <section class="sort-bin" data-bin="transformed" tabindex="0" role="button" aria-label="Placer dans les aliments transformés">
-            <div class="sort-bin__title"><span>🥣</span><strong>Aliments transformés</strong></div>
+            <div class="sort-bin__title"><span>🥣</span><strong>Aliments transformés</strong><span class="bin-count" id="count-transformed">0 / 10</span></div>
+            <div class="drop-hint">Touchez ici pour placer l’aliment sélectionné</div>
             <div class="sort-bin__content" id="bin-transformed"></div>
           </section>
         </div>
@@ -159,6 +161,6 @@
   </main>
 
   <footer class="footer">Géographie CM1 · Se nourrir · Produits agricoles et aliments transformés</footer>
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
