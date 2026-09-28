@@ -1,1 +1,164 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f5d68">
+  <title>Produits agricoles et aliments transformés — Géographie CM1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <div class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</div>
+        <h1>Mission : du produit agricole à l’aliment transformé</h1>
+        <p>Trois étapes pour distinguer les produits agricoles, retrouver les aliments transformés qui en sont issus et comprendre qu’une recette peut avoir plusieurs origines.</p>
+      </div>
+      <img class="hero__art" src="assets/globe-food.svg" alt="Globe et feuille verte">
+    </div>
+  </header>
 
+  <main class="shell">
+    <section class="mission-board" aria-label="Progression">
+      <button class="stage-tab is-active" data-stage="1" aria-current="step">
+        <span class="stage-tab__num">1</span>
+        <span><strong>Le tri du marché</strong><small>Brut ou transformé ?</small></span>
+        <span class="stage-tab__status" data-status="1">À faire</span>
+      </button>
+      <button class="stage-tab" data-stage="2" disabled>
+        <span class="stage-tab__num">2</span>
+        <span><strong>Les duos de fabrication</strong><small>Retrouver la matière première</small></span>
+        <span class="stage-tab__status" data-status="2">Verrouillé</span>
+      </button>
+      <button class="stage-tab" data-stage="3" disabled>
+        <span class="stage-tab__num">3</span>
+        <span><strong>L’atelier des recettes</strong><small>Comprendre les transformations</small></span>
+        <span class="stage-tab__status" data-status="3">Verrouillé</span>
+      </button>
+    </section>
+
+    <section class="rule-card" aria-label="Règle du jeu">
+      <div class="rule-card__icon">✓</div>
+      <div>
+        <strong>Pour valider une étape :</strong> réussis-la entièrement sans erreur au cours d’une même tentative, puis clique sur <b>Vérifier</b>. Si tu te trompes, corrige pour apprendre, puis recommence l’étape pour obtenir la validation.
+      </div>
+    </section>
+
+    <section id="stage-1" class="game-stage" data-stage-panel="1">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 1</p>
+          <h2>Le tri du marché</h2>
+          <p>Touche un aliment, puis touche la bonne catégorie. Un aliment déjà placé peut être repris et déplacé avant la vérification.</p>
+        </div>
+        <img src="assets/plate.svg" alt="Assiette et aliments" class="stage-heading__art">
+      </div>
+
+      <aside class="source-card">
+        <h3>Repères du document</h3>
+        <div class="source-grid source-grid--two">
+          <div><strong>Produit agricole (ou brut)</strong><span>Il vient directement de la nature, d’une plante ou d’un animal.</span></div>
+          <div><strong>Aliment transformé</strong><span>Il a été transformé par l’Homme.</span></div>
+        </div>
+      </aside>
+
+      <div class="sort-layout">
+        <section class="food-bank-wrap">
+          <h3>À classer</h3>
+          <div id="food-bank" class="food-bank" aria-label="Aliments à classer"></div>
+        </section>
+        <div class="bins">
+          <section class="sort-bin" data-bin="raw" tabindex="0" role="button" aria-label="Placer dans les produits agricoles ou bruts">
+            <div class="sort-bin__title"><span>🌱</span><strong>Produits agricoles<br><small>(ou bruts)</small></strong></div>
+            <div class="sort-bin__content" id="bin-raw"></div>
+          </section>
+          <section class="sort-bin" data-bin="transformed" tabindex="0" role="button" aria-label="Placer dans les aliments transformés">
+            <div class="sort-bin__title"><span>🥣</span><strong>Aliments transformés</strong></div>
+            <div class="sort-bin__content" id="bin-transformed"></div>
+          </section>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-1">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-1">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-1" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-2" class="game-stage is-hidden" data-stage-panel="2">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 2</p>
+          <h2>Les duos de fabrication</h2>
+          <p>Touche d’abord un produit agricole, puis l’aliment transformé qui peut être fabriqué à partir de lui.</p>
+        </div>
+        <div class="pair-art" aria-hidden="true">↔</div>
+      </div>
+
+      <div class="pair-help"><strong>8 duos à retrouver.</strong> Si tu changes d’avis, touche une carte déjà associée pour libérer le duo.</div>
+      <div class="pair-board">
+        <div>
+          <h3 class="column-title">Produits agricoles</h3>
+          <div id="raw-pairs" class="pair-column"></div>
+        </div>
+        <div>
+          <h3 class="column-title">Aliments transformés</h3>
+          <div id="transformed-pairs" class="pair-column"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-2">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-2">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-2" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-3" class="game-stage is-hidden" data-stage-panel="3">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 3</p>
+          <h2>L’atelier des recettes</h2>
+          <p>Sélectionne toutes les bonnes réponses dans chaque défi, puis vérifie l’ensemble de l’étape.</p>
+        </div>
+        <div class="recipe-art" aria-hidden="true">🥄</div>
+      </div>
+
+      <article class="challenge" data-challenge="apple">
+        <div class="challenge__head"><span class="challenge__num">A</span><div><h3>Une pomme peut donner plusieurs aliments transformés</h3><p>Sélectionne les trois exemples donnés dans la séance.</p></div></div>
+        <div class="text-chips" id="apple-options"></div>
+      </article>
+
+      <article class="challenge" data-challenge="tart">
+        <div class="challenge__head"><span class="challenge__num">B</span><div><h3>Une tarte aux fraises peut avoir plusieurs produits agricoles à l’origine</h3><p>Sélectionne les deux produits cités dans la séance.</p></div></div>
+        <div class="mini-food-grid" id="tart-options"></div>
+      </article>
+
+      <article class="challenge" data-challenge="actions">
+        <div class="challenge__head"><span class="challenge__num">C</span><div><h3>Transformer des ingrédients</h3><p>Sélectionne les actions indiquées dans la trace écrite pour fabriquer des aliments transformés.</p></div></div>
+        <div class="text-chips" id="action-options"></div>
+      </article>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-3">Vérifier</button>
+        <button class="btn btn--ghost is-hidden" id="restart-3">Recommencer l’étape</button>
+      </div>
+      <div id="feedback-3" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="final-card" class="final-card is-hidden" aria-live="polite">
+      <div class="final-card__badge">★</div>
+      <div>
+        <p class="kicker">MISSION RÉUSSIE</p>
+        <h2>Bravo ! Les trois étapes sont validées.</h2>
+        <p>Tu sais distinguer un produit agricole d’un aliment transformé et retrouver l’origine de plusieurs aliments.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Géographie CM1 · Se nourrir · Produits agricoles et aliments transformés</footer>
+  <script src="app.js"></script>
+</body>
+</html>
