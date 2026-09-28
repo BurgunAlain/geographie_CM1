@@ -94,6 +94,17 @@ function makeFoodCard(food){
   b.innerHTML=`<img src="${food.img}" alt="${food.name}"><span>${food.name}</span>`;
   b.addEventListener('click',(e)=>{
     e.stopPropagation();
+
+    // Si l'aliment est déjà placé, un simple toucher le retire
+    // et le remet dans la zone « À classer ».
+    if(placements[food.id]!==null){
+      placements[food.id]=null;
+      selectedFood=null;
+      renderSort();
+      return;
+    }
+
+    // Sinon, on le sélectionne pour le placer dans une catégorie.
     selectedFood = selectedFood===food.id ? null : food.id;
     qsa('.food-card').forEach(x=>x.classList.toggle('is-selected',x.dataset.food===selectedFood));
   });
@@ -138,7 +149,7 @@ qs('#check-1').addEventListener('click',()=>{
   });
   if(!all){
     stageState[1].hadError=true;
-    report(1,'bad','Au moins un aliment est mal classé ou n’a pas encore été placé. Corrige le tri pour t’entraîner : cette tentative ne pourra plus être validée.');
+    report(1,'bad','Au moins un aliment est mal classé ou n’a pas encore été placé. Touche un aliment mal placé pour le retirer, puis replace-le dans la bonne catégorie. Cette tentative ne pourra plus être validée.');
     return;
   }
   if(stageState[1].hadError){
