@@ -1,1 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f5d68">
+  <title>Ingrédients et additifs — Géographie CM1</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <div class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</div>
+        <h1>Mission : enquête dans les listes d’ingrédients</h1>
+        <p>Observe des produits du quotidien, classe leurs ingrédients et découvre à quoi servent les additifs.</p>
+      </div>
+      <img class="hero__art" src="assets/globe-food.svg" alt="">
+    </div>
+  </header>
 
+  <main class="shell">
+    <section class="mission-board" aria-label="Progression">
+      <button class="stage-tab is-active" data-stage="1" aria-current="step">
+        <span class="stage-tab__num">1</span>
+        <span><strong>L’enquête des ingrédients</strong><small>Agricole, transformé ou additif ?</small></span>
+        <span class="stage-tab__status" data-status="1">À faire</span>
+      </button>
+      <button class="stage-tab" data-stage="2" disabled>
+        <span class="stage-tab__num">2</span>
+        <span><strong>Le rôle des additifs</strong><small>Texture, goût, couleur, conservation</small></span>
+        <span class="stage-tab__status" data-status="2">Verrouillé</span>
+      </button>
+      <button class="stage-tab" data-stage="3" disabled>
+        <span class="stage-tab__num">3</span>
+        <span><strong>Le niveau de transformation</strong><small>Du plus simple au plus transformé</small></span>
+        <span class="stage-tab__status" data-status="3">Verrouillé</span>
+      </button>
+    </section>
+
+    <section class="rule-card">
+      <div class="rule-card__icon">✓</div>
+      <div>
+        <strong>Pour valider une étape :</strong> réussis-la entièrement sans erreur au cours d’une même tentative, puis clique sur <b>Vérifier</b>.
+        Après une erreur, tu peux corriger pour apprendre, mais tu devras ensuite <b>réinitialiser l’étape</b> et la réussir sans faute.
+      </div>
+    </section>
+
+    <section id="stage-1" class="game-stage" data-stage-panel="1">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 1</p>
+          <h2>L’enquête des ingrédients</h2>
+          <p>Observe les étiquettes, puis classe les ingrédients. Touche un ingrédient, puis sa catégorie. Pour retirer un ingrédient déjà placé, touche-le simplement.</p>
+        </div>
+        <img src="assets/plate.svg" alt="" class="stage-heading__art">
+      </div>
+
+      <aside class="source-card">
+        <h3>Documents à observer</h3>
+        <div class="doc-grid">
+          <figure><img src="assets/docs/compote.webp" alt="Emballage et liste d’ingrédients d’une compote pommes-mangues"><figcaption>Compote pommes-mangues</figcaption></figure>
+          <figure><img src="assets/docs/carottes.webp" alt="Emballage et liste d’ingrédients de carottes râpées"><figcaption>Carottes râpées</figcaption></figure>
+          <figure><img src="assets/docs/sirop.webp" alt="Bouteille de sirop de menthe et liste d’ingrédients"><figcaption>Sirop de menthe</figcaption></figure>
+        </div>
+      </aside>
+
+      <div class="legend-grid">
+        <div><span class="legend-dot legend-dot--green">🌱</span><strong>Produits agricoles</strong><small>Ils viennent directement de la nature.</small></div>
+        <div><span class="legend-dot legend-dot--red">🥣</span><strong>Produits transformés</strong><small>Ils sont fabriqués à partir de produits agricoles.</small></div>
+        <div><span class="legend-dot legend-dot--black">⚗️</span><strong>Additifs</strong><small>Ils sont ajoutés pour remplir une fonction technique.</small></div>
+      </div>
+
+      <section class="ingredient-bank-wrap">
+        <h3>Ingrédients à classer <span class="muted">(ordre mélangé à chaque tentative)</span></h3>
+        <div id="ingredient-bank" class="ingredient-bank"></div>
+      </section>
+
+      <div class="bins bins--three">
+        <section class="sort-bin" data-bin="agri" tabindex="0" role="button">
+          <div class="sort-bin__title"><span>🌱</span><strong>Produits agricoles</strong><span class="bin-count" id="count-agri">0</span></div>
+          <div class="drop-hint">Touchez ici pour placer l’ingrédient sélectionné</div>
+          <div class="sort-bin__content" id="bin-agri"></div>
+        </section>
+        <section class="sort-bin" data-bin="transformed" tabindex="0" role="button">
+          <div class="sort-bin__title"><span>🥣</span><strong>Produits transformés</strong><span class="bin-count" id="count-transformed">0</span></div>
+          <div class="drop-hint">Touchez ici pour placer l’ingrédient sélectionné</div>
+          <div class="sort-bin__content" id="bin-transformed"></div>
+        </section>
+        <section class="sort-bin" data-bin="additive" tabindex="0" role="button">
+          <div class="sort-bin__title"><span>⚗️</span><strong>Additifs</strong><span class="bin-count" id="count-additive">0</span></div>
+          <div class="drop-hint">Touchez ici pour placer l’ingrédient sélectionné</div>
+          <div class="sort-bin__content" id="bin-additive"></div>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-1">Vérifier</button>
+        <button class="btn btn--ghost" id="reset-1">Réinitialiser l’étape</button>
+      </div>
+      <div id="feedback-1" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-2" class="game-stage is-hidden" data-stage-panel="2">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 2</p>
+          <h2>À quoi servent les additifs ?</h2>
+          <p>Associe chaque effet à la fonction correspondante. Les deux colonnes sont mélangées à chaque tentative.</p>
+        </div>
+        <div class="big-icon" aria-hidden="true">⚗️</div>
+      </div>
+
+      <div class="pair-board">
+        <div>
+          <h3 class="column-title">Effets observés</h3>
+          <div id="effect-column" class="pair-column"></div>
+        </div>
+        <div>
+          <h3 class="column-title">Fonctions</h3>
+          <div id="function-column" class="pair-column"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-2">Vérifier</button>
+        <button class="btn btn--ghost" id="reset-2">Réinitialiser l’étape</button>
+      </div>
+      <div id="feedback-2" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="stage-3" class="game-stage is-hidden" data-stage-panel="3">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 3</p>
+          <h2>Du moins transformé au plus transformé</h2>
+          <p>Touche un produit, puis sa place. Les cartes sont mélangées à chaque tentative.</p>
+        </div>
+        <div class="big-icon" aria-hidden="true">🔎</div>
+      </div>
+
+      <aside class="source-card">
+        <strong>Indice :</strong> plus un produit est transformé, plus sa liste d’ingrédients est souvent longue.
+      </aside>
+
+      <div id="rank-bank" class="rank-bank"></div>
+
+      <div class="rank-slots">
+        <section class="rank-slot" data-rank="1" tabindex="0" role="button">
+          <div class="rank-slot__head"><span>1</span><strong>Le moins transformé</strong></div>
+          <div id="rank-1" class="rank-slot__content"></div>
+        </section>
+        <section class="rank-slot" data-rank="2" tabindex="0" role="button">
+          <div class="rank-slot__head"><span>2</span><strong>Intermédiaire</strong></div>
+          <div id="rank-2" class="rank-slot__content"></div>
+        </section>
+        <section class="rank-slot" data-rank="3" tabindex="0" role="button">
+          <div class="rank-slot__head"><span>3</span><strong>Le plus transformé</strong></div>
+          <div id="rank-3" class="rank-slot__content"></div>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-3">Vérifier</button>
+        <button class="btn btn--ghost" id="reset-3">Réinitialiser l’étape</button>
+      </div>
+      <div id="feedback-3" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="final-card" class="final-card is-hidden" aria-live="polite">
+      <div class="final-card__badge">★</div>
+      <div>
+        <p class="kicker">MISSION RÉUSSIE</p>
+        <h2>Bravo ! Les trois étapes sont validées.</h2>
+        <p>Tu sais distinguer produits agricoles, produits transformés et additifs, et expliquer plusieurs rôles des additifs.</p>
+      </div>
+    </section>
+
+    <div id="autotest-result" hidden></div>
+  </main>
+
+  <footer class="footer">Géographie CM1 · Se nourrir · Ingrédients et additifs</footer>
+  <script src="app.js?v=2"></script>
+</body>
+</html>
