@@ -29,6 +29,14 @@ const stageState = {
 
 function qs(sel, root=document){ return root.querySelector(sel); }
 function qsa(sel, root=document){ return [...root.querySelectorAll(sel)]; }
+function shuffled(items){
+  const copy=[...items];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
 
 function renderQuiz(){
   const area=qs('#quiz-area');
@@ -62,20 +70,36 @@ function renderCalc(){
   });
 }
 
+function clearDiagnosticMarks(kind){
+  const box=qs(`[data-diagnostic="${kind}"]`);
+  box.classList.remove('is-correct','is-wrong');
+  qsa(`#chips-${kind} .choice-chip`).forEach(b=>b.classList.remove('is-answer','is-bad'));
+}
+
 function renderDiagnostic(){
-  qs('#totals-strip').innerHTML=countries.map(c=>`<div class="total-pill"><strong>${c.flag} ${c.name}</strong><span>${c.total.toLocaleString('fr-FR')} cal.</span></div>`).join('');
+  const totalsOrder=shuffled(countries);
+  qs('#totals-strip').innerHTML=totalsOrder.map(c=>`<div class="total-pill"><strong>${c.flag} ${c.name}</strong><span>${c.total.toLocaleString('fr-FR')} cal.</span></div>`).join('');
+
   ['undernutrition','malnutrition'].forEach(kind=>{
     const area=qs(`#chips-${kind}`); area.innerHTML='';
-    countries.forEach(c=>{
+    shuffled(countries).forEach(c=>{
       const b=document.createElement('button');
       b.type='button'; b.className='choice-chip'; b.dataset.country=c.id;
       b.textContent=`${c.flag} ${c.name}`;
-      b.addEventListener('click',()=>b.classList.toggle('is-selected'));
+      b.addEventListener('click',()=>{
+        b.classList.toggle('is-selected');
+        // Dès que l'élève modifie son choix, on efface les anciennes
+        // couleurs de correction : elles ne doivent jamais masquer l'état réel.
+        clearDiagnosticMarks(kind);
+      });
       area.appendChild(b);
     });
   });
-}
 
+  qsa('.diagnostic-question').forEach(x=>x.classList.remove('is-correct','is-wrong'));
+  qs('#check-3').disabled=false;
+  qs('#restart-3').classList.remove('is-hidden');
+}
 function markStageDone(stage){
   stageState[stage].validated=true;
   const tab=qs(`[data-stage="${stage}"]`);
@@ -173,20 +197,27 @@ qs('#check-3').addEventListener('click',()=>{
   let all=true;
   ['undernutrition','malnutrition'].forEach(kind=>{
     const chosen=selectedSet(kind); const ok=sameSet(chosen,answers[kind]);
-    const box=qs(`[data-diagnostic="${kind}"]`); box.classList.remove('is-correct','is-wrong'); box.classList.add(ok?'is-correct':'is-wrong');
+    const box=qs(`[data-diagnostic="${kind}"]`);
+    box.classList.remove('is-correct','is-wrong');
+    box.classList.add(ok?'is-correct':'is-wrong');
     qsa(`#chips-${kind} .choice-chip`).forEach(b=>{
       b.classList.remove('is-answer','is-bad');
-      if(b.classList.contains('is-selected')) b.classList.add(answers[kind].has(b.dataset.country)?'is-answer':'is-bad');
+      if(b.classList.contains('is-selected')){
+        b.classList.add(answers[kind].has(b.dataset.country)?'is-answer':'is-bad');
+      }
     });
     if(!ok) all=false;
   });
+
   if(!all){
     stageState[3].hadError=true;
-    report(3,'bad','Au moins un pays est mal classé ou manque. Appuie sur les pays pour modifier tes choix. Cette tentative devient une tentative d’entraînement.');
+    report(3,'bad','Au moins un pays est mal classé ou manque. Modifie tes choix en touchant les pays. Tu peux aussi réinitialiser entièrement l’étape. Cette tentative ne pourra plus être validée.');
+    qs('#restart-3').classList.remove('is-hidden');
     return;
   }
+
   if(stageState[3].hadError){
-    report(3,'train','Tes choix sont maintenant corrects. Recommence l’étape et réussis les deux diagnostics sans erreur pour obtenir la validation.');
+    report(3,'train','Tes choix sont maintenant corrects. Pour obtenir la validation, clique sur « Réinitialiser l’étape », puis réussis les deux diagnostics sans aucune erreur.');
     qs('#restart-3').classList.remove('is-hidden');
   } else {
     report(3,'ok','Sans-faute ! Étape 3 validée. Mission accomplie !');
@@ -195,8 +226,10 @@ qs('#check-3').addEventListener('click',()=>{
 });
 
 qs('#restart-3').addEventListener('click',()=>{
-  stageState[3].hadError=false; clearFeedback(3); renderDiagnostic();
-  qsa('.diagnostic-question').forEach(x=>x.classList.remove('is-correct','is-wrong'));
+  stageState[3].hadError=false;
+  const f=qs('#feedback-3');
+  f.textContent='';
+  f.className='feedback';
+  renderDiagnostic();
 });
-
 renderQuiz(); renderCalc(); renderDiagnostic();
