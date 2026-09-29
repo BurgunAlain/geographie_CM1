@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f5d68">
   <title>Ingrédients et additifs — Géographie CM1</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
   <header class="hero">
@@ -28,7 +28,7 @@
       </button>
       <button class="stage-tab" data-stage="2" disabled>
         <span class="stage-tab__num">2</span>
-        <span><strong>Le rôle des additifs</strong><small>Texture, goût, couleur, conservation</small></span>
+        <span><strong>Le laboratoire des additifs</strong><small>Résoudre 4 situations concrètes</small></span>
         <span class="stage-tab__status" data-status="2">Verrouillé</span>
       </button>
       <button class="stage-tab" data-stage="3" disabled>
@@ -105,22 +105,18 @@
       <div class="stage-heading">
         <div>
           <p class="kicker">ÉTAPE 2</p>
-          <h2>À quoi servent les additifs ?</h2>
-          <p>Associe chaque effet à la fonction correspondante. Les deux colonnes sont mélangées à chaque tentative.</p>
+          <h2>Le laboratoire des additifs</h2>
+          <p>Pour chaque situation, trouve la fonction de l’additif qui répond au besoin du fabricant. Les situations et les réponses sont mélangées à chaque tentative.</p>
         </div>
-        <div class="big-icon" aria-hidden="true">⚗️</div>
+        <div class="big-icon" aria-hidden="true">🧪</div>
       </div>
 
-      <div class="pair-board">
-        <div>
-          <h3 class="column-title">Effets observés</h3>
-          <div id="effect-column" class="pair-column"></div>
-        </div>
-        <div>
-          <h3 class="column-title">Fonctions</h3>
-          <div id="function-column" class="pair-column"></div>
-        </div>
-      </div>
+      <aside class="source-card lab-source">
+        <img src="sirop.webp" alt="Sirop de menthe et liste d’ingrédients">
+        <div><strong>Exemple de la séance :</strong> le colorant E133 donne la couleur verte au sirop de menthe. À toi d’appliquer le même raisonnement à d’autres besoins.</div>
+      </aside>
+
+      <div id="lab-scenarios" class="lab-scenarios"></div>
 
       <div class="actions">
         <button class="btn btn--primary" id="check-2">Vérifier</button>
@@ -133,32 +129,44 @@
       <div class="stage-heading">
         <div>
           <p class="kicker">ÉTAPE 3</p>
-          <h2>Du moins transformé au plus transformé</h2>
-          <p>Touche un produit, puis sa place. Les cartes sont mélangées à chaque tentative.</p>
+          <h2>Enquête sur le niveau de transformation</h2>
+          <p>Trois défis pour comprendre comment une liste d’ingrédients peut renseigner sur le niveau de transformation d’un produit.</p>
         </div>
         <div class="big-icon" aria-hidden="true">🔎</div>
       </div>
 
       <aside class="source-card">
-        <strong>Indice :</strong> plus un produit est transformé, plus sa liste d’ingrédients est souvent longue.
+        <strong>Indice de la séance :</strong> plus un produit est transformé, plus sa liste d’ingrédients est souvent longue ; un produit très transformé peut aussi contenir des additifs.
       </aside>
 
-      <div id="rank-bank" class="rank-bank"></div>
+      <section class="subchallenge">
+        <div class="subchallenge__title"><span>1</span><div><strong>Du plus simple au plus transformé</strong><small>Place les trois produits dans l’ordre.</small></div></div>
+        <div id="rank-bank" class="rank-bank"></div>
+        <div class="rank-slots">
+          <section class="rank-slot" data-rank="1" tabindex="0" role="button">
+            <div class="rank-slot__head"><span>1</span><strong>Le moins transformé</strong></div>
+            <div id="rank-1" class="rank-slot__content"></div>
+          </section>
+          <section class="rank-slot" data-rank="2" tabindex="0" role="button">
+            <div class="rank-slot__head"><span>2</span><strong>Intermédiaire</strong></div>
+            <div id="rank-2" class="rank-slot__content"></div>
+          </section>
+          <section class="rank-slot" data-rank="3" tabindex="0" role="button">
+            <div class="rank-slot__head"><span>3</span><strong>Le plus transformé</strong></div>
+            <div id="rank-3" class="rank-slot__content"></div>
+          </section>
+        </div>
+      </section>
 
-      <div class="rank-slots">
-        <section class="rank-slot" data-rank="1" tabindex="0" role="button">
-          <div class="rank-slot__head"><span>1</span><strong>Le moins transformé</strong></div>
-          <div id="rank-1" class="rank-slot__content"></div>
-        </section>
-        <section class="rank-slot" data-rank="2" tabindex="0" role="button">
-          <div class="rank-slot__head"><span>2</span><strong>Intermédiaire</strong></div>
-          <div id="rank-2" class="rank-slot__content"></div>
-        </section>
-        <section class="rank-slot" data-rank="3" tabindex="0" role="button">
-          <div class="rank-slot__head"><span>3</span><strong>Le plus transformé</strong></div>
-          <div id="rank-3" class="rank-slot__content"></div>
-        </section>
-      </div>
+      <section class="subchallenge">
+        <div class="subchallenge__title"><span>2</span><div><strong>Compare les produits</strong><small>Dans chaque duel, choisis le produit le plus transformé.</small></div></div>
+        <div id="compare-grid" class="compare-grid"></div>
+      </section>
+
+      <section class="subchallenge">
+        <div class="subchallenge__title"><span>3</span><div><strong>Repère les bons indices</strong><small>Sélectionne les deux indices qui peuvent montrer qu’un produit est très transformé.</small></div></div>
+        <div id="clue-grid" class="clue-grid"></div>
+      </section>
 
       <div class="actions">
         <button class="btn btn--primary" id="check-3">Vérifier</button>
@@ -180,6 +188,6 @@
   </main>
 
   <footer class="footer">Géographie CM1 · Se nourrir · Ingrédients et additifs</footer>
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
