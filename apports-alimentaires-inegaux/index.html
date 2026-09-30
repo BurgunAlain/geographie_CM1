@@ -23,6 +23,40 @@
 @media(max-width:520px){.meal-evidence-static{padding:13px}.meal-line{grid-template-columns:88px 1fr}.meal-line em{grid-column:2}.meal-evidence-static__head>span{white-space:normal}}
 </style>
 
+
+<style>
+.flag-diagnostic{margin:22px 0 8px}
+.flag-diagnostic__intro{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin-bottom:14px}
+.flag-diagnostic__intro h3{margin:2px 0 4px;font-size:1.25rem}
+.flag-diagnostic__intro p{margin:0;color:#61767a}
+.flag-diagnostic__hint{max-width:330px;background:#fff8ea;border:1px solid #f0d58e;border-radius:14px;padding:9px 11px;font-size:.8rem;font-weight:800;color:#76560c}
+.country-flag-bank{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;min-height:96px;padding:14px;background:#f7fbfb;border:2px dashed #b8d5d2;border-radius:18px;margin-bottom:14px}
+.country-flag{border:2px solid #d7e5e3;background:#fff;border-radius:15px;padding:10px 8px;min-height:76px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:grab;font-weight:900;color:#17343a;touch-action:manipulation}
+.country-flag:active{cursor:grabbing}.country-flag.is-selected{border-color:#176b78;background:#e8f5f3;box-shadow:0 0 0 3px rgba(23,107,120,.10)}
+.country-flag.is-correct{border-color:#2f8f63;background:#eaf7ef}.country-flag.is-wrong{border-color:#b94343;background:#fff0ef}
+.country-flag__emoji{font-size:2rem;line-height:1}.country-flag__name{font-size:.82rem;line-height:1.1;text-align:left}
+.diagnostic-drop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.diagnostic-dropzone{border:2px dashed #b8d5d2;background:#fbfdfd;border-radius:18px;padding:14px;min-height:180px;cursor:pointer}
+.diagnostic-dropzone:hover,.diagnostic-dropzone:focus,.diagnostic-dropzone.is-dragover{border-color:#176b78;background:#f4fbfa;outline:none}
+.diagnostic-dropzone.is-correct{border-color:#2f8f63;background:#f5fbf7}.diagnostic-dropzone.is-wrong{border-color:#b94343;background:#fff8f7}
+.diagnostic-dropzone__head{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding-bottom:10px;border-bottom:1px solid #e5efee}
+.diagnostic-dropzone__head h3{margin:0;font-size:1.05rem}.diagnostic-dropzone__head p{margin:2px 0 0;color:#61767a;font-size:.78rem}
+.diagnostic-dropzone__icon{font-size:1.55rem}.diagnostic-count{background:#eaf2f1;color:#176b78;border-radius:999px;padding:4px 8px;font-weight:900;font-size:.78rem}
+.diagnostic-dropzone__content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start;min-height:98px;padding-top:10px}
+.diagnostic-dropzone__content .country-flag{min-height:65px;padding:7px}.diagnostic-dropzone__content .country-flag__emoji{font-size:1.65rem}.diagnostic-dropzone__content .country-flag__name{font-size:.74rem}
+.diagnostic-empty{grid-column:1/-1;color:#8a9b9e;font-size:.82rem;text-align:center;padding:24px 6px}
+@media(max-width:760px){
+  .flag-diagnostic__intro{align-items:flex-start;flex-direction:column}
+  .flag-diagnostic__hint{max-width:none}
+  .country-flag-bank{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .diagnostic-drop-grid{grid-template-columns:1fr}
+}
+@media(max-width:420px){
+  .country-flag__name{font-size:.76rem}
+  .diagnostic-dropzone__content{grid-template-columns:1fr 1fr}
+}
+</style>
+
 </head>
 <body>
   <header class="hero">
@@ -187,15 +221,48 @@
         </div>
       </section>
 
-      <div class="diagnostic-question" data-diagnostic="undernutrition">
-        <h3>Quels pays sont en situation de sous-nutrition dans ces exemples ?</h3>
-        <div class="choice-chips" id="chips-undernutrition"></div>
-      </div>
+      <section class="flag-diagnostic">
+        <div class="flag-diagnostic__intro">
+          <div>
+            <p class="kicker">À TOI DE DIAGNOSTIQUER</p>
+            <h3>Place les drapeaux dans la bonne case</h3>
+            <p>Glisse les drapeaux dans les cases. Sur tablette ou téléphone, tu peux aussi toucher un drapeau puis toucher sa case. Pour retirer un drapeau déjà placé, touche-le.</p>
+          </div>
+          <span class="flag-diagnostic__hint">Un pays qui ne correspond à aucune des deux situations reste au-dessus.</span>
+        </div>
 
-      <div class="diagnostic-question" data-diagnostic="malnutrition">
-        <h3>Quel pays présente une situation de malnutrition dans cet exemple ?</h3>
-        <div class="choice-chips" id="chips-malnutrition"></div>
-      </div>
+        <div id="country-flag-bank" class="country-flag-bank" aria-label="Drapeaux à classer"></div>
+
+        <div class="diagnostic-drop-grid">
+          <section class="diagnostic-dropzone" id="drop-undernutrition" data-diagnostic="undernutrition" tabindex="0" role="button" aria-label="Case sous-nutrition">
+            <div class="diagnostic-dropzone__head">
+              <span class="diagnostic-dropzone__icon">🍽️</span>
+              <div>
+                <h3>Sous-nutrition</h3>
+                <p>Pas assez de calories pour vivre correctement.</p>
+              </div>
+              <span class="diagnostic-count" id="count-undernutrition">0</span>
+            </div>
+            <div class="diagnostic-dropzone__content" id="zone-undernutrition">
+              <span class="diagnostic-empty">Dépose le ou les drapeaux ici.</span>
+            </div>
+          </section>
+
+          <section class="diagnostic-dropzone" id="drop-malnutrition" data-diagnostic="malnutrition" tabindex="0" role="button" aria-label="Case malnutrition">
+            <div class="diagnostic-dropzone__head">
+              <span class="diagnostic-dropzone__icon">⚖️</span>
+              <div>
+                <h3>Malnutrition</h3>
+                <p>Alimentation déséquilibrée : trop ou pas assez de certains aliments.</p>
+              </div>
+              <span class="diagnostic-count" id="count-malnutrition">0</span>
+            </div>
+            <div class="diagnostic-dropzone__content" id="zone-malnutrition">
+              <span class="diagnostic-empty">Dépose le ou les drapeaux ici.</span>
+            </div>
+          </section>
+        </div>
+      </section>
 
       <div class="actions">
         <button class="btn btn--primary" id="check-3">Vérifier</button>
@@ -215,6 +282,6 @@
   </main>
 
   <footer class="footer">Géographie CM1 · Se nourrir · Apports alimentaires inégaux</footer>
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>

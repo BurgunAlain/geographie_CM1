@@ -9,35 +9,15 @@ const quizQuestions = [
 const countries = [
   {id:"france", name:"France", flag:"🇫🇷", rows:[
     ["Petit-déjeuner","330"],["Déjeuner","36 + 170 + 200 + 80 + 52"],["Goûter","800"],["Dîner","450 + 120"]
-  ], meals:[
-    ["Petit-déjeuner","Lait, céréales","330"],
-    ["Déjeuner","Carottes râpées, poulet, riz, yaourt, pomme","538"],
-    ["Goûter","4 cookies","800"],
-    ["Dîner","Pâtes aux lardons, fromage","570"]
   ], total:2238},
   {id:"usa", name:"États-Unis", flag:"🇺🇸", rows:[
     ["Petit-déjeuner","420"],["Déjeuner","310 + 135 + 52"],["Goûter","746"],["Dîner","590 + 400 + 150 + 300"]
-  ], meals:[
-    ["Petit-déjeuner","Œufs brouillés, bacon, pain","420"],
-    ["Déjeuner","Sandwich beurre de cacahuète-confiture, crackers, pomme","497"],
-    ["Goûter","2 barres de céréales","746"],
-    ["Dîner","Burger, frites, soda, glace","1 440"]
   ], total:3103},
   {id:"nk", name:"Corée du Nord", flag:"🇰🇵", rows:[
     ["Petit-déjeuner","300"],["Déjeuner","240 + 50"],["Goûter","0"],["Dîner","100 + 150"]
-  ], meals:[
-    ["Petit-déjeuner","Bouillie de maïs","300"],
-    ["Déjeuner","Riz, légumes","290"],
-    ["Goûter","Rien","0"],
-    ["Dîner","Soupe, un peu de riz","250"]
   ], total:840},
   {id:"rca", name:"République centrafricaine", flag:"🇨🇫", rows:[
     ["Petit-déjeuner","0"],["Déjeuner","240 + 180 + 37 + 44"],["Goûter","0"],["Dîner","≈ 300"]
-  ], meals:[
-    ["Petit-déjeuner","Rien","0"],
-    ["Déjeuner","Riz, pois, feuilles de manioc, huile","501"],
-    ["Goûter","Rien","0"],
-    ["Dîner","Restes ou bouillie ou manioc","≈ 300"]
   ], total:801}
 ];
 
@@ -90,48 +70,139 @@ function renderCalc(){
   });
 }
 
-function clearDiagnosticMarks(kind){
-  const box=qs(`[data-diagnostic="${kind}"]`);
-  box.classList.remove('is-correct','is-wrong');
-  qsa(`#chips-${kind} .choice-chip`).forEach(b=>b.classList.remove('is-answer','is-bad'));
+let diagnosticOrder=[];
+let countryPlacement={};
+let selectedCountry=null;
+
+function clearDiagnosticVisuals(){
+  qsa('.diagnostic-dropzone').forEach(z=>z.classList.remove('is-correct','is-wrong','is-dragover'));
+  qsa('.country-flag').forEach(b=>b.classList.remove('is-correct','is-wrong'));
+}
+
+function makeCountryFlag(c){
+  const b=document.createElement('button');
+  b.type='button';
+  b.className='country-flag';
+  b.dataset.country=c.id;
+  b.draggable=true;
+  b.innerHTML=`<span class="country-flag__emoji">${c.flag}</span><span class="country-flag__name">${c.name}</span>`;
+  if(selectedCountry===c.id) b.classList.add('is-selected');
+
+  b.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    clearDiagnosticVisuals();
+
+    // Si le drapeau est déjà placé, un toucher le remet dans la banque.
+    if(countryPlacement[c.id]){
+      countryPlacement[c.id]=null;
+      selectedCountry=null;
+      renderDiagnosticPlacement();
+      return;
+    }
+
+    // Sinon on le sélectionne pour le placer par toucher.
+    selectedCountry=selectedCountry===c.id ? null : c.id;
+    renderDiagnosticPlacement();
+  });
+
+  b.addEventListener('dragstart',(e)=>{
+    selectedCountry=c.id;
+    e.dataTransfer.setData('text/plain',c.id);
+    e.dataTransfer.effectAllowed='move';
+  });
+
+  b.addEventListener('dragend',()=>{
+    qsa('.diagnostic-dropzone').forEach(z=>z.classList.remove('is-dragover'));
+  });
+
+  return b;
+}
+
+function renderDiagnosticPlacement(){
+  const bank=qs('#country-flag-bank');
+  const zones={
+    undernutrition:qs('#zone-undernutrition'),
+    malnutrition:qs('#zone-malnutrition')
+  };
+
+  bank.innerHTML='';
+  Object.values(zones).forEach(z=>z.innerHTML='');
+
+  diagnosticOrder.forEach(c=>{
+    const flag=makeCountryFlag(c);
+    const p=countryPlacement[c.id];
+    (p ? zones[p] : bank).appendChild(flag);
+  });
+
+  ['undernutrition','malnutrition'].forEach(kind=>{
+    const count=Object.values(countryPlacement).filter(v=>v===kind).length;
+    qs(`#count-${kind}`).textContent=count;
+    if(count===0){
+      const empty=document.createElement('span');
+      empty.className='diagnostic-empty';
+      empty.textContent='Dépose le ou les drapeaux ici.';
+      zones[kind].appendChild(empty);
+    }
+  });
+}
+
+function placeCountry(kind,countryId=selectedCountry){
+  if(!countryId) return;
+  clearDiagnosticVisuals();
+  countryPlacement[countryId]=kind;
+  selectedCountry=null;
+  renderDiagnosticPlacement();
 }
 
 function renderDiagnostic(){
-  const mealOrder=shuffled(countries);
-  qs('#meal-country-grid').innerHTML=mealOrder.map(c=>`
-    <article class="meal-country-card" data-meal-country="${c.id}">
-      <div class="meal-country-title">
-        <span class="flag">${c.flag}</span>
-        <div>
-          <h4>${c.name}</h4>
-          <span class="meal-total">${c.total.toLocaleString('fr-FR')} calories</span>
-        </div>
-      </div>
-      <div class="meal-list">
-        ${c.meals.map(m=>`
-          <div class="meal-row">
-            <strong>${m[0]}</strong>
-            <span class="meal-foods">${m[1]}</span>
-            <span class="meal-cal">${m[2]} cal.</span>
-          </div>`).join('')}
-      </div>
-    </article>`).join('');
+  diagnosticOrder=shuffled(countries);
+  selectedCountry=null;
+  countryPlacement={};
+  countries.forEach(c=>countryPlacement[c.id]=null);
 
-  ['undernutrition','malnutrition'].forEach(kind=>{
-    const area=qs(`#chips-${kind}`); area.innerHTML='';
-    shuffled(countries).forEach(c=>{
-      const b=document.createElement('button');
-      b.type='button'; b.className='choice-chip'; b.dataset.country=c.id;
-      b.textContent=`${c.flag} ${c.name}`;
-      b.addEventListener('click',()=>{
-        b.classList.toggle('is-selected');
-        clearDiagnosticMarks(kind);
-      });
-      area.appendChild(b);
-    });
+  const totalsOrder=shuffled(countries);
+  qs('#totals-strip').innerHTML=totalsOrder.map(c=>`<div class="total-pill"><strong>${c.flag} ${c.name}</strong><span>${c.total.toLocaleString('fr-FR')} cal.</span></div>`).join('');
+
+  renderDiagnosticPlacement();
+
+  qsa('.diagnostic-dropzone').forEach(zone=>{
+    const kind=zone.dataset.diagnostic;
+
+    zone.onclick=()=>placeCountry(kind);
+    zone.onkeydown=(e)=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        placeCountry(kind);
+      }
+    };
+    zone.ondragover=(e)=>{
+      e.preventDefault();
+      zone.classList.add('is-dragover');
+      e.dataTransfer.dropEffect='move';
+    };
+    zone.ondragleave=()=>zone.classList.remove('is-dragover');
+    zone.ondrop=(e)=>{
+      e.preventDefault();
+      zone.classList.remove('is-dragover');
+      const id=e.dataTransfer.getData('text/plain') || selectedCountry;
+      placeCountry(kind,id);
+    };
   });
 
-  qsa('.diagnostic-question').forEach(x=>x.classList.remove('is-correct','is-wrong'));
+  // On peut aussi glisser un drapeau vers la banque pour le retirer.
+  const bank=qs('#country-flag-bank');
+  bank.ondragover=(e)=>{e.preventDefault();e.dataTransfer.dropEffect='move'};
+  bank.ondrop=(e)=>{
+    e.preventDefault();
+    const id=e.dataTransfer.getData('text/plain') || selectedCountry;
+    if(id){
+      countryPlacement[id]=null;
+      selectedCountry=null;
+      clearDiagnosticVisuals();
+      renderDiagnosticPlacement();
+    }
+  };
+
   qs('#check-3').disabled=false;
   qs('#restart-3').classList.remove('is-hidden');
 }
@@ -224,35 +295,44 @@ qs('#restart-2').addEventListener('click',()=>{
   stageState[2].hadError=false; clearFeedback(2); renderCalc();
 });
 
-function selectedSet(kind){ return new Set(qsa(`#chips-${kind} .choice-chip.is-selected`).map(b=>b.dataset.country)); }
-function sameSet(a,b){ return a.size===b.size && [...a].every(x=>b.has(x)); }
-
 qs('#check-3').addEventListener('click',()=>{
-  const answers={undernutrition:new Set(['nk','rca']),malnutrition:new Set(['usa'])};
+  const expected={
+    france:null,
+    usa:'malnutrition',
+    nk:'undernutrition',
+    rca:'undernutrition'
+  };
+
   let all=true;
-  ['undernutrition','malnutrition'].forEach(kind=>{
-    const chosen=selectedSet(kind); const ok=sameSet(chosen,answers[kind]);
-    const box=qs(`[data-diagnostic="${kind}"]`);
-    box.classList.remove('is-correct','is-wrong');
-    box.classList.add(ok?'is-correct':'is-wrong');
-    qsa(`#chips-${kind} .choice-chip`).forEach(b=>{
-      b.classList.remove('is-answer','is-bad');
-      if(b.classList.contains('is-selected')){
-        b.classList.add(answers[kind].has(b.dataset.country)?'is-answer':'is-bad');
-      }
-    });
+  clearDiagnosticVisuals();
+
+  countries.forEach(c=>{
+    const flag=qs(`.country-flag[data-country="${c.id}"]`);
+    const ok=countryPlacement[c.id]===expected[c.id];
+    if(flag) flag.classList.add(ok?'is-correct':'is-wrong');
     if(!ok) all=false;
+  });
+
+  ['undernutrition','malnutrition'].forEach(kind=>{
+    const zone=qs(`[data-diagnostic="${kind}"]`);
+    const zoneCorrect=countries
+      .filter(c=>expected[c.id]===kind)
+      .every(c=>countryPlacement[c.id]===kind)
+      && countries
+      .filter(c=>expected[c.id]!==kind)
+      .every(c=>countryPlacement[c.id]!==kind);
+    zone.classList.add(zoneCorrect?'is-correct':'is-wrong');
   });
 
   if(!all){
     stageState[3].hadError=true;
-    report(3,'bad','Au moins un pays est mal classé ou manque. Modifie tes choix en touchant les pays. Tu peux aussi réinitialiser entièrement l’étape. Cette tentative ne pourra plus être validée.');
+    report(3,'bad','Au moins un drapeau est mal placé ou manque. Corrige tes choix en déplaçant les drapeaux. Cette tentative ne pourra plus être validée.');
     qs('#restart-3').classList.remove('is-hidden');
     return;
   }
 
   if(stageState[3].hadError){
-    report(3,'train','Tes choix sont maintenant corrects. Pour obtenir la validation, clique sur « Réinitialiser l’étape », puis réussis les deux diagnostics sans aucune erreur.');
+    report(3,'train','Tous les drapeaux sont maintenant bien placés. Réinitialise l’étape puis réussis-la sans erreur pour la valider.');
     qs('#restart-3').classList.remove('is-hidden');
   } else {
     report(3,'ok','Sans-faute ! Étape 3 validée. Mission accomplie !');
@@ -267,4 +347,5 @@ qs('#restart-3').addEventListener('click',()=>{
   f.className='feedback';
   renderDiagnostic();
 });
+
 renderQuiz(); renderCalc(); renderDiagnostic();
