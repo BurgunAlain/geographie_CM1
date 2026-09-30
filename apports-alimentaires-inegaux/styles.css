@@ -112,7 +112,20 @@ h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-wi
 .final-card__badge{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#694900;font-size:2rem;border:4px solid #ffe099}
 .final-card p{margin:5px 0;color:var(--muted)}
 .footer{text-align:center;color:#74878a;padding:0 20px 34px;font-size:.86rem}
-@media (max-width:900px){
+
+.meal-evidence{margin:18px 0 22px;background:#f8fbfb;border:1px solid #cfe1df;border-radius:20px;padding:18px}
+.meal-evidence__head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:14px}
+.meal-evidence__head h3{margin:0;font-size:1.2rem}
+.meal-evidence__head>span{background:var(--cream);border:1px solid #f0d58e;border-radius:999px;padding:7px 11px;font-weight:900;color:#76560c;white-space:nowrap}
+.meal-country-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.meal-country-card{background:#fff;border:1px solid #dce9e7;border-radius:16px;padding:14px;box-shadow:0 4px 12px rgba(23,52,58,.04)}
+.meal-country-title{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid #e7efee}
+.meal-country-title .flag{font-size:1.75rem}.meal-country-title h4{margin:0;font-size:1.03rem}.meal-total{display:block;color:var(--teal);font-weight:900;font-size:.86rem;margin-top:2px}
+.meal-list{display:grid;gap:0;margin-top:4px}
+.meal-row{display:grid;grid-template-columns:110px 1fr auto;gap:9px;align-items:start;padding:8px 0;border-bottom:1px solid #edf3f2;font-size:.82rem}
+.meal-row:last-child{border-bottom:0}.meal-row strong{color:var(--ink)}.meal-foods{color:var(--muted)}.meal-cal{font-weight:900;color:var(--teal);white-space:nowrap}
+
+@media (max-width:900px){.meal-country-grid{grid-template-columns:1fr}.meal-evidence__head{align-items:flex-start;flex-direction:column}
   .hero__inner{grid-template-columns:1fr 190px}.mission-board{grid-template-columns:1fr}.stage-tab{grid-template-columns:42px 1fr auto}.country-grid{grid-template-columns:1fr}.choice-chips{grid-template-columns:repeat(2,1fr)}.totals-strip{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:640px){

@@ -9,15 +9,35 @@ const quizQuestions = [
 const countries = [
   {id:"france", name:"France", flag:"🇫🇷", rows:[
     ["Petit-déjeuner","330"],["Déjeuner","36 + 170 + 200 + 80 + 52"],["Goûter","800"],["Dîner","450 + 120"]
+  ], meals:[
+    ["Petit-déjeuner","Lait, céréales","330"],
+    ["Déjeuner","Carottes râpées, poulet, riz, yaourt, pomme","538"],
+    ["Goûter","4 cookies","800"],
+    ["Dîner","Pâtes aux lardons, fromage","570"]
   ], total:2238},
   {id:"usa", name:"États-Unis", flag:"🇺🇸", rows:[
     ["Petit-déjeuner","420"],["Déjeuner","310 + 135 + 52"],["Goûter","746"],["Dîner","590 + 400 + 150 + 300"]
+  ], meals:[
+    ["Petit-déjeuner","Œufs brouillés, bacon, pain","420"],
+    ["Déjeuner","Sandwich beurre de cacahuète-confiture, crackers, pomme","497"],
+    ["Goûter","2 barres de céréales","746"],
+    ["Dîner","Burger, frites, soda, glace","1 440"]
   ], total:3103},
   {id:"nk", name:"Corée du Nord", flag:"🇰🇵", rows:[
     ["Petit-déjeuner","300"],["Déjeuner","240 + 50"],["Goûter","0"],["Dîner","100 + 150"]
+  ], meals:[
+    ["Petit-déjeuner","Bouillie de maïs","300"],
+    ["Déjeuner","Riz, légumes","290"],
+    ["Goûter","Rien","0"],
+    ["Dîner","Soupe, un peu de riz","250"]
   ], total:840},
   {id:"rca", name:"République centrafricaine", flag:"🇨🇫", rows:[
     ["Petit-déjeuner","0"],["Déjeuner","240 + 180 + 37 + 44"],["Goûter","0"],["Dîner","≈ 300"]
+  ], meals:[
+    ["Petit-déjeuner","Rien","0"],
+    ["Déjeuner","Riz, pois, feuilles de manioc, huile","501"],
+    ["Goûter","Rien","0"],
+    ["Dîner","Restes ou bouillie ou manioc","≈ 300"]
   ], total:801}
 ];
 
@@ -77,8 +97,25 @@ function clearDiagnosticMarks(kind){
 }
 
 function renderDiagnostic(){
-  const totalsOrder=shuffled(countries);
-  qs('#totals-strip').innerHTML=totalsOrder.map(c=>`<div class="total-pill"><strong>${c.flag} ${c.name}</strong><span>${c.total.toLocaleString('fr-FR')} cal.</span></div>`).join('');
+  const mealOrder=shuffled(countries);
+  qs('#meal-country-grid').innerHTML=mealOrder.map(c=>`
+    <article class="meal-country-card" data-meal-country="${c.id}">
+      <div class="meal-country-title">
+        <span class="flag">${c.flag}</span>
+        <div>
+          <h4>${c.name}</h4>
+          <span class="meal-total">${c.total.toLocaleString('fr-FR')} calories</span>
+        </div>
+      </div>
+      <div class="meal-list">
+        ${c.meals.map(m=>`
+          <div class="meal-row">
+            <strong>${m[0]}</strong>
+            <span class="meal-foods">${m[1]}</span>
+            <span class="meal-cal">${m[2]} cal.</span>
+          </div>`).join('')}
+      </div>
+    </article>`).join('');
 
   ['undernutrition','malnutrition'].forEach(kind=>{
     const area=qs(`#chips-${kind}`); area.innerHTML='';
@@ -88,8 +125,6 @@ function renderDiagnostic(){
       b.textContent=`${c.flag} ${c.name}`;
       b.addEventListener('click',()=>{
         b.classList.toggle('is-selected');
-        // Dès que l'élève modifie son choix, on efface les anciennes
-        // couleurs de correction : elles ne doivent jamais masquer l'état réel.
         clearDiagnosticMarks(kind);
       });
       area.appendChild(b);
