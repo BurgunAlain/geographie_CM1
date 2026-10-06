@@ -1,1 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f5d68">
+<title>La provenance des aliments — Géographie CM1</title>
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</div>
+      <h1>Mission : d’où viennent les aliments ?</h1>
+      <p>Explore le menu d’une cantine, retrouve l’origine des aliments et découvre pourquoi certains produits voyagent jusqu’en France.</p>
+    </div>
+    <img src="globe.svg" class="hero-art" alt="">
+  </div>
+</header>
 
+<main class="shell">
+  <nav class="progress" aria-label="Progression">
+    <button class="tab active" data-go="1"><span>1</span><div><b>La cantine de Montfleury</b><small>Local, France ou importé ?</small></div><em data-status="1">À faire</em></button>
+    <button class="tab" data-go="2" disabled><span>2</span><div><b>Les routes des aliments</b><small>Origines et distances</small></div><em data-status="2">Verrouillé</em></button>
+    <button class="tab" data-go="3" disabled><span>3</span><div><b>Climat et échanges</b><small>Pourquoi importe-t-on ?</small></div><em data-status="3">Verrouillé</em></button>
+  </nav>
+
+  <aside class="rule">
+    <strong>Règle du sans-faute :</strong> une étape n’est validée que si tu la réussis entièrement sans erreur au cours d’une même tentative, puis que tu cliques sur <b>Vérifier</b>. Après une erreur, corrige pour apprendre puis réinitialise l’étape.
+  </aside>
+
+  <section class="stage" id="stage1">
+    <div class="stage-head">
+      <div><p class="kicker">ÉTAPE 1</p><h2>La cantine de Montfleury</h2>
+      <p>À partir du menu et du texte, classe les aliments selon leur provenance. Touche un aliment puis une case. Un aliment déjà placé peut être retiré en le touchant.</p></div>
+      <img src="menu.webp" class="menu-thumb" alt="Menu de la semaine de la cantine">
+    </div>
+
+    <details class="docbox">
+      <summary>Voir le menu de la semaine</summary>
+      <img src="menu.webp" alt="Menu de la semaine">
+    </details>
+
+    <div class="source-text">
+      <h3>Le texte donne les indices</h3>
+      <p>La ville travaille avec des agriculteurs de sa région pour les légumes, les fruits de saison, la viande et les produits laitiers. Les pâtes sont fabriquées en France. Le chocolat vient de Belgique, le riz du Cambodge, le saumon de Norvège et la banane des Antilles françaises.</p>
+    </div>
+
+    <h3 class="bank-title">Aliments à classer <small>— ordre mélangé à chaque tentative</small></h3>
+    <div id="food-bank" class="bank"></div>
+
+    <div class="three-bins">
+      <section class="bin" data-bin="local" tabindex="0">
+        <header><span>🥕</span><div><b>Production locale</b><small>Produits par les agriculteurs de la région</small></div><em id="count-local">0</em></header>
+        <div class="dropzone" id="bin-local"></div>
+      </section>
+      <section class="bin" data-bin="france" tabindex="0">
+        <header><span>🇫🇷</span><div><b>Produit en France</b><small>Fabriqué en France, sans être indiqué comme local</small></div><em id="count-france">0</em></header>
+        <div class="dropzone" id="bin-france"></div>
+      </section>
+      <section class="bin" data-bin="import" tabindex="0">
+        <header><span>🌍</span><div><b>Importé</b><small>Vient d’un autre pays ou territoire</small></div><em id="count-import">0</em></header>
+        <div class="dropzone" id="bin-import"></div>
+      </section>
+    </div>
+
+    <div class="actions"><button class="primary" id="check1">Vérifier</button><button class="secondary" id="reset1">Réinitialiser l’étape</button></div>
+    <div class="feedback" id="feedback1" aria-live="polite"></div>
+  </section>
+
+  <section class="stage hidden" id="stage2">
+    <div class="stage-head">
+      <div><p class="kicker">ÉTAPE 2</p><h2>Les routes des aliments</h2>
+      <p>Aide-toi du planisphère. Pour chaque lieu d’origine, place le bon aliment et la bonne distance approximative jusqu’à la France.</p></div>
+      <div class="bigicon">🗺️</div>
+    </div>
+
+    <div class="map-card"><img src="carte.webp" alt="Planisphère indiquant la Belgique, la Norvège, les Antilles françaises et le Cambodge"></div>
+
+    <div class="route-banks">
+      <div><h3>Aliments</h3><div id="route-food-bank" class="route-bank"></div></div>
+      <div><h3>Distances</h3><div id="distance-bank" class="route-bank"></div></div>
+    </div>
+
+    <div id="route-zones" class="route-zones"></div>
+
+    <div class="actions"><button class="primary" id="check2">Vérifier</button><button class="secondary" id="reset2">Réinitialiser l’étape</button></div>
+    <div class="feedback" id="feedback2" aria-live="polite"></div>
+  </section>
+
+  <section class="stage hidden" id="stage3">
+    <div class="stage-head">
+      <div><p class="kicker">ÉTAPE 3</p><h2>Climat et échanges</h2>
+      <p>Observe la bananeraie puis réponds aux situations. Les questions et les réponses sont mélangées à chaque tentative.</p></div>
+      <img src="bananeraie.webp" class="banana-thumb" alt="Bananeraie">
+    </div>
+
+    <div class="banana-card">
+      <img src="bananeraie.webp" alt="Bananeraie">
+      <div><strong>Indice :</strong> le bananier a besoin de beaucoup de chaleur, de lumière et d’eau. Dans de bonnes conditions, autour de 25 à 30 °C, il produit des bananes comestibles.</div>
+    </div>
+
+    <div id="quiz3" class="scenario-list"></div>
+
+    <div class="actions"><button class="primary" id="check3">Vérifier</button><button class="secondary" id="reset3">Réinitialiser l’étape</button></div>
+    <div class="feedback" id="feedback3" aria-live="polite"></div>
+  </section>
+
+  <section id="final" class="final hidden">
+    <div>★</div><section><p class="kicker">MISSION RÉUSSIE</p><h2>Bravo !</h2><p>Tu sais expliquer que notre alimentation dépend de la production locale, de la production française et des échanges avec d’autres territoires.</p></section>
+  </section>
+</main>
+
+<footer>Géographie CM1 · Se nourrir · La provenance des aliments</footer>
+<script src="app.js?v=1"></script>
+</body>
+</html>
