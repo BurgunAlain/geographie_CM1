@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f5d68">
   <title>Produits agricoles et aliments transformés — Géographie CM1</title>
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <header class="hero">
@@ -13,7 +13,7 @@
       <div class="hero__copy">
         <div class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</div>
         <h1>Mission : du produit agricole à l’aliment transformé</h1>
-        <p>Trois étapes pour distinguer les produits agricoles, retrouver les aliments transformés qui en sont issus et comprendre qu’une recette peut avoir plusieurs origines.</p>
+        <p>Quatre étapes pour distinguer les produits agricoles, retrouver les aliments transformés qui en sont issus, comprendre les transformations et compléter la trace écrite.</p>
       </div>
       <img class="hero__art" src="assets/globe-food.svg" alt="Globe et feuille verte">
     </div>
@@ -35,6 +35,11 @@
         <span class="stage-tab__num">3</span>
         <span><strong>L’atelier des recettes</strong><small>Comprendre les transformations</small></span>
         <span class="stage-tab__status" data-status="3">Verrouillé</span>
+      </button>
+      <button class="stage-tab" data-stage="4" disabled>
+        <span class="stage-tab__num">4</span>
+        <span><strong>La trace écrite</strong><small>Compléter le texte à trous</small></span>
+        <span class="stage-tab__status" data-status="4">Verrouillé</span>
       </button>
     </section>
 
@@ -134,8 +139,8 @@
       </article>
 
       <article class="challenge" data-challenge="tart">
-        <div class="challenge__head"><span class="challenge__num">B</span><div><h3>Une tarte aux fraises peut avoir plusieurs produits agricoles à l’origine</h3><p>Sélectionne les deux produits cités dans la séance.</p></div></div>
-        <div class="mini-food-grid" id="tart-options"></div>
+        <div class="challenge__head"><span class="challenge__num">B</span><div><h3>Quels éléments peuvent servir à fabriquer une tarte aux fraises ?</h3><p>Sélectionne les quatre éléments nécessaires parmi les propositions.</p></div></div>
+        <div class="text-chips" id="tart-options"></div>
       </article>
 
       <article class="challenge" data-challenge="actions">
@@ -150,17 +155,58 @@
       <div id="feedback-3" class="feedback" aria-live="polite"></div>
     </section>
 
+    <section id="stage-4" class="game-stage is-hidden" data-stage-panel="4">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 4 · TRACE ÉCRITE</p>
+          <h2>Complète la trace écrite</h2>
+          <p>Touche un mot, puis le trou correspondant. Si tu changes d’avis, touche un mot déjà placé pour le remettre dans la banque.</p>
+        </div>
+        <div class="trace-art" aria-hidden="true">✎</div>
+      </div>
+
+      <aside class="trace-help">
+        <strong>12 mots à replacer.</strong> Tous les mots sont utilisés une seule fois et leur ordre change à chaque nouvelle tentative.
+      </aside>
+
+      <div id="cloze-bank" class="cloze-bank" aria-label="Mots à replacer"></div>
+
+      <article class="cloze-text" id="cloze-text" aria-label="Trace écrite à compléter">
+        <h3>Les aliments transformés</h3>
+        <p>
+          Les aliments que nous mangeons n’ont pas tous la même <button class="cloze-slot" data-slot="origine" type="button">…</button>.
+          Certains sont présents dans la <button class="cloze-slot" data-slot="nature" type="button">…</button>,
+          les produits agricoles (ou produits <button class="cloze-slot" data-slot="bruts" type="button">…</button>) :
+          les fruits, les légumes, les <button class="cloze-slot" data-slot="oeufs" type="button">…</button>, le lait ou le poisson.
+          Ils viennent des <button class="cloze-slot" data-slot="plantes" type="button">…</button> ou des
+          <button class="cloze-slot" data-slot="animaux" type="button">…</button>.
+          D’autres aliments sont <button class="cloze-slot" data-slot="transformes" type="button">…</button> par l’homme :
+          le <button class="cloze-slot" data-slot="pain" type="button">…</button>, les pâtes, le
+          <button class="cloze-slot" data-slot="fromage" type="button">…</button>, les yaourts, les biscuits ou les plats préparés.
+          Pour les fabriquer, on <button class="cloze-slot" data-slot="coupe" type="button">…</button>, mélange,
+          <button class="cloze-slot" data-slot="cuit" type="button">…</button>, ajoute ou
+          <button class="cloze-slot" data-slot="conserve" type="button">…</button> des ingrédients.
+        </p>
+      </article>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-4">Vérifier</button>
+        <button class="btn btn--ghost" id="restart-4">Réinitialiser l’étape</button>
+      </div>
+      <div id="feedback-4" class="feedback" aria-live="polite"></div>
+    </section>
+
     <section id="final-card" class="final-card is-hidden" aria-live="polite">
       <div class="final-card__badge">★</div>
       <div>
         <p class="kicker">MISSION RÉUSSIE</p>
-        <h2>Bravo ! Les trois étapes sont validées.</h2>
-        <p>Tu sais distinguer un produit agricole d’un aliment transformé et retrouver l’origine de plusieurs aliments.</p>
+        <h2>Bravo ! Les quatre étapes sont validées.</h2>
+        <p>Tu sais distinguer un produit agricole d’un aliment transformé, expliquer des transformations et compléter la trace écrite.</p>
       </div>
     </section>
   </main>
 
   <footer class="footer">Géographie CM1 · Se nourrir · Produits agricoles et aliments transformés</footer>
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>

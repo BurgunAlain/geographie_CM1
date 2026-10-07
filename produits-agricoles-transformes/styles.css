@@ -12,7 +12,7 @@ button{font:inherit;touch-action:manipulation}.is-hidden{display:none!important}
 .eyebrow,.kicker{font-weight:900;letter-spacing:.11em;font-size:.78rem}.eyebrow{color:#cdecea;margin-bottom:8px}
 h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-width:850px}.hero p{font-size:1.06rem;max-width:800px;margin:0;color:#e8f6f5}.hero__art{width:100%;max-width:260px;justify-self:end;filter:drop-shadow(0 12px 20px rgba(0,0,0,.14))}
 .shell{max-width:1180px;margin:0 auto;padding:26px 24px 54px}
-.mission-board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:4px 0 18px}
+.mission-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:4px 0 18px}
 .stage-tab{border:2px solid var(--line);background:#fff;border-radius:18px;padding:14px;text-align:left;display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;color:var(--ink);box-shadow:0 4px 14px rgba(23,52,58,.05);min-height:86px;cursor:pointer}
 .stage-tab:disabled{opacity:.58;cursor:not-allowed}.stage-tab.is-active{border-color:var(--teal);box-shadow:0 0 0 3px rgba(23,107,120,.09)}.stage-tab.is-done{border-color:var(--ok);background:var(--ok-soft)}
 .stage-tab__num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-weight:900}.stage-tab.is-done .stage-tab__num{background:var(--ok);color:#fff}
@@ -157,3 +157,21 @@ h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-wi
 @media(max-width:620px){
   .sort-slot{min-height:70px}
 }
+
+
+/* Étape 4 — trace écrite à trous */
+.trace-art{justify-self:end;width:82px;height:82px;border-radius:24px;display:grid;place-items:center;background:var(--cream);border:2px solid #f1d991;color:var(--teal);font-size:2.6rem;font-weight:900}
+.trace-help{background:var(--cream);border:1px solid #efd892;border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.cloze-bank{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;padding:14px;background:#f8fbfb;border:1px dashed #bcd5d2;border-radius:17px;min-height:82px;margin-bottom:17px}
+.cloze-word{border:2px solid #d8e5e4;background:#fff;border-radius:12px;padding:10px 8px;min-height:45px;font-weight:850;cursor:pointer;color:var(--ink)}
+.cloze-word.is-selected{border-color:var(--teal);background:var(--teal-soft);box-shadow:0 0 0 3px rgba(23,107,120,.10)}
+.cloze-text{background:#fff;border:1px solid #dfeae9;border-radius:18px;padding:20px}
+.cloze-text h3{margin:0 0 12px;color:var(--teal);font-size:1.28rem}
+.cloze-text p{margin:0;font-size:1.05rem;line-height:2.15}
+.cloze-slot{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;min-width:92px;min-height:38px;margin:2px 3px;padding:5px 10px;border:2px dashed #9ebfbb;border-radius:10px;background:#f8fbfb;color:var(--teal);font-weight:900;cursor:pointer;line-height:1.1}
+.cloze-slot.is-filled{border-style:solid;background:var(--teal-soft)}
+.cloze-slot.is-correct{border-color:var(--ok);background:var(--ok-soft);color:#256e4e}
+.cloze-slot.is-wrong{border-color:var(--bad);background:var(--bad-soft);color:#8d3030}
+@media(max-width:900px){.cloze-bank{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:620px){.trace-art{width:72px;height:72px;font-size:2rem}.cloze-bank{grid-template-columns:repeat(3,1fr)}.cloze-text{padding:15px}.cloze-text p{font-size:.98rem;line-height:2.05}.cloze-slot{min-width:78px;min-height:36px;padding:5px 7px;margin:2px 1px}}
+@media(max-width:390px){.trace-art{display:none}.cloze-bank{grid-template-columns:repeat(2,1fr)}.cloze-text p{font-size:.94rem;line-height:2.0}.cloze-slot{min-width:70px}}

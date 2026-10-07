@@ -35,7 +35,8 @@ const pairs = [
 const stageState = {
   1:{hadError:false, validated:false},
   2:{hadError:false, validated:false},
-  3:{hadError:false, validated:false}
+  3:{hadError:false, validated:false},
+  4:{hadError:false, validated:false}
 };
 
 function qs(sel, root=document){ return root.querySelector(sel); }
@@ -51,12 +52,20 @@ function shuffleArray(items){
   return a;
 }
 
+function shuffleDifferent(items){
+  const original=[...items];
+  let a=shuffleArray(items), tries=0;
+  while(a.length>1 && a.every((v,i)=>v===original[i]) && tries++<40) a=shuffleArray(items);
+  if(a.length>1 && a.every((v,i)=>v===original[i])) a=[...original.slice(1),original[0]];
+  return a;
+}
+
 function markStageDone(stage){
   stageState[stage].validated=true;
   const tab=qs(`[data-stage="${stage}"]`);
   tab.classList.add('is-done');
   qs(`[data-status="${stage}"]`).textContent='Validé ✓';
-  if(stage<3){
+  if(stage<4){
     const next=qs(`[data-stage="${stage+1}"]`);
     next.disabled=false;
     qs(`[data-status="${stage+1}"]`).textContent='À faire';
@@ -82,7 +91,7 @@ function clearFeedback(stage){
   const f=qs(`#feedback-${stage}`);
   f.textContent='';
   f.className='feedback';
-  qs(`#restart-${stage}`).classList.add('is-hidden');
+  if(stage!==4) qs(`#restart-${stage}`).classList.add('is-hidden');
 }
 function report(stage,type,text){
   const f=qs(`#feedback-${stage}`);
@@ -306,8 +315,16 @@ const challenges={
     ], correct:new Set(['compote','jus','tarte-pomme'])
   },
   tart:{
-    container:'#tart-options', type:'food',
-    options:['fraises','ble','lait','cacao','pomme'], correct:new Set(['fraises','ble'])
+    container:'#tart-options', type:'text',
+    options:[
+      {id:'fraises',label:'🍓 Fraises'},
+      {id:'ble',label:'🌾 Blé'},
+      {id:'lait',label:'🥛 Lait'},
+      {id:'eau',label:'💧 Eau'},
+      {id:'cacao',label:'🍫 Cacao'},
+      {id:'pomme',label:'🍎 Pomme'}
+    ],
+    correct:new Set(['fraises','ble','lait','eau'])
   },
   actions:{
     container:'#action-options', type:'text',
@@ -376,7 +393,7 @@ qs('#check-3').addEventListener('click',()=>{
     report(3,'train','Tout est désormais correct. Recommence l’étape et réussis les trois défis sans erreur pour obtenir la validation.');
     qs('#restart-3').classList.remove('is-hidden');
   }else{
-    report(3,'ok','Sans-faute ! Étape 3 validée. Mission accomplie !');
+    report(3,'ok','Sans-faute ! Étape 3 validée. La trace écrite est maintenant débloquée !');
     markStageDone(3);
   }
 });
@@ -388,6 +405,154 @@ qs('#restart-3').addEventListener('click',()=>{
   renderChallenges();
 });
 
+
+
+// ----- Étape 4 : trace écrite à trous -----
+const clozeWords = [
+  {id:'origine', label:'origine'},
+  {id:'nature', label:'nature'},
+  {id:'bruts', label:'bruts'},
+  {id:'oeufs', label:'œufs'},
+  {id:'plantes', label:'plantes'},
+  {id:'animaux', label:'animaux'},
+  {id:'transformes', label:'transformés'},
+  {id:'pain', label:'pain'},
+  {id:'fromage', label:'fromage'},
+  {id:'coupe', label:'coupe'},
+  {id:'cuit', label:'cuit'},
+  {id:'conserve', label:'conserve'}
+];
+
+let clozeOrder=[];
+let clozePlacement={}; // slot -> word id
+let selectedClozeWord=null;
+
+function clozeWordById(id){ return clozeWords.find(w=>w.id===id); }
+function placedSlotForWord(id){ return Object.keys(clozePlacement).find(slot=>clozePlacement[slot]===id) || null; }
+
+function renderCloze(){
+  const bank=qs('#cloze-bank');
+  bank.innerHTML='';
+
+  clozeOrder.forEach(id=>{
+    if(placedSlotForWord(id)) return;
+    const w=clozeWordById(id);
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='cloze-word';
+    b.dataset.word=id;
+    b.textContent=w.label;
+    if(selectedClozeWord===id) b.classList.add('is-selected');
+    b.addEventListener('click',()=>{
+      selectedClozeWord=selectedClozeWord===id ? null : id;
+      qsa('.cloze-word').forEach(x=>x.classList.toggle('is-selected',x.dataset.word===selectedClozeWord));
+      qsa('.cloze-slot').forEach(x=>x.classList.remove('is-correct','is-wrong'));
+      clearFeedback(4);
+    });
+    bank.appendChild(b);
+  });
+
+  qsa('.cloze-slot').forEach(slot=>{
+    const id=clozePlacement[slot.dataset.slot] || null;
+    slot.textContent=id ? clozeWordById(id).label : '…';
+    slot.classList.toggle('is-filled',Boolean(id));
+    slot.classList.remove('is-correct','is-wrong');
+  });
+}
+
+function placeClozeWord(slotId){
+  const existing=clozePlacement[slotId] || null;
+
+  // Toucher un trou rempli sans mot sélectionné : retire le mot.
+  if(!selectedClozeWord && existing){
+    clozePlacement[slotId]=null;
+    renderCloze();
+    clearFeedback(4);
+    return;
+  }
+  if(!selectedClozeWord) return;
+
+  // Si le mot était déjà ailleurs, on le libère.
+  const previous=placedSlotForWord(selectedClozeWord);
+  if(previous) clozePlacement[previous]=null;
+
+  // Si le trou contenait déjà un autre mot, il retourne à la banque.
+  clozePlacement[slotId]=selectedClozeWord;
+  selectedClozeWord=null;
+  renderCloze();
+  clearFeedback(4);
+}
+
+qsa('.cloze-slot').forEach(slot=>{
+  slot.addEventListener('click',()=>placeClozeWord(slot.dataset.slot));
+});
+
+function resetCloze(){
+  stageState[4].hadError=false;
+  selectedClozeWord=null;
+  clozePlacement={};
+  clozeWords.forEach(w=>clozePlacement[w.id]=null);
+  clozeOrder=shuffleDifferent(clozeWords.map(w=>w.id));
+  clearFeedback(4);
+  renderCloze();
+}
+
+qs('#check-4').addEventListener('click',()=>{
+  let all=true;
+  qsa('.cloze-slot').forEach(slot=>{
+    const expected=slot.dataset.slot;
+    const ok=clozePlacement[expected]===expected;
+    slot.classList.remove('is-correct','is-wrong');
+    slot.classList.add(ok?'is-correct':'is-wrong');
+    if(!ok) all=false;
+  });
+
+  if(!all){
+    stageState[4].hadError=true;
+    report(4,'bad','Il reste au moins un mot mal placé ou un trou vide. Corrige la trace pour apprendre, puis réinitialise l’étape pour tenter un sans-faute.');
+    return;
+  }
+  if(stageState[4].hadError){
+    report(4,'train','La trace écrite est maintenant correcte. Réinitialise l’étape et complète-la sans aucune erreur pour la valider.');
+  }else{
+    report(4,'ok','Sans-faute ! La trace écrite est entièrement correcte. Mission accomplie !');
+    markStageDone(4);
+  }
+});
+
+qs('#restart-4').addEventListener('click',resetCloze);
+
+resetCloze();
 renderSort();
 renderPairs();
 renderChallenges();
+
+
+// Aperçu et autotest internes (sans effet en usage normal).
+const qaParams=new URLSearchParams(location.search);
+if(qaParams.get('preview')==='stage4'){
+  const tab4=qs('[data-stage="4"]'); tab4.disabled=false; showStage(4);
+}
+if(qaParams.get('preview')==='stage4full'){
+  const tab4=qs('[data-stage="4"]'); tab4.disabled=false; showStage(4);
+  clozeWords.forEach(w=>clozePlacement[w.id]=w.id); renderCloze();
+}
+if(qaParams.get('autotest')==='1'){
+  let ok=true;
+  try{
+    // tentative avec erreur
+    resetCloze();
+    clozeWords.forEach(w=>clozePlacement[w.id]=w.id);
+    clozePlacement.origine='nature';
+    clozePlacement.nature='origine';
+    renderCloze(); qs('#check-4').click();
+    ok = ok && stageState[4].hadError===true && stageState[4].validated===false;
+    // correction après erreur ne valide pas
+    clozeWords.forEach(w=>clozePlacement[w.id]=w.id); renderCloze(); qs('#check-4').click();
+    ok = ok && stageState[4].validated===false;
+    // reset + sans-faute valide
+    resetCloze(); clozeWords.forEach(w=>clozePlacement[w.id]=w.id); renderCloze(); qs('#check-4').click();
+    ok = ok && stageState[4].validated===true;
+  }catch(e){ ok=false; }
+  const r=document.createElement('div');r.id='autotest-result';r.textContent=ok?'AUTOTEST_OK':'AUTOTEST_FAIL';document.body.appendChild(r);
+}
