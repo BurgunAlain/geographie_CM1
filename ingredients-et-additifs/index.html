@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0f5d68">
   <title>Ingrédients et additifs — Géographie CM1</title>
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <header class="hero">
@@ -15,7 +15,7 @@
         <h1>Mission : enquête dans les listes d’ingrédients</h1>
         <p>Observe des produits du quotidien, classe leurs ingrédients et découvre à quoi servent les additifs.</p>
       </div>
-      <img class="hero__art" src="assets/globe-food.svg" alt="">
+      <img class="hero__art" src="globe-food.svg" alt="">
     </div>
   </header>
 
@@ -36,6 +36,11 @@
         <span><strong>Le niveau de transformation</strong><small>Du plus simple au plus transformé</small></span>
         <span class="stage-tab__status" data-status="3">Verrouillé</span>
       </button>
+      <button class="stage-tab" data-stage="4" disabled>
+        <span class="stage-tab__num">4</span>
+        <span><strong>La trace écrite</strong><small>Compléter le texte à trous</small></span>
+        <span class="stage-tab__status" data-status="4">Verrouillé</span>
+      </button>
     </section>
 
     <section class="rule-card">
@@ -53,7 +58,7 @@
           <h2>L’enquête des ingrédients</h2>
           <p>Observe les étiquettes, puis classe les ingrédients. Touche un ingrédient, puis sa catégorie. Pour retirer un ingrédient déjà placé, touche-le simplement.</p>
         </div>
-        <img src="assets/plate.svg" alt="" class="stage-heading__art">
+        <img src="plate.svg" alt="" class="stage-heading__art">
       </div>
 
       <aside class="source-card">
@@ -106,14 +111,14 @@
         <div>
           <p class="kicker">ÉTAPE 2</p>
           <h2>Le laboratoire des additifs</h2>
-          <p>Pour chaque situation, trouve la fonction de l’additif qui répond au besoin du fabricant. Les situations et les réponses sont mélangées à chaque tentative.</p>
+          <p>Lis chaque situation et déduis la fonction recherchée. Aucun mot de la question ne donne directement la réponse : appuie-toi sur l'effet décrit.</p>
         </div>
         <div class="big-icon" aria-hidden="true">🧪</div>
       </div>
 
       <aside class="source-card lab-source">
         <img src="sirop.webp" alt="Sirop de menthe et liste d’ingrédients">
-        <div><strong>Exemple de la séance :</strong> le colorant E133 donne la couleur verte au sirop de menthe. À toi d’appliquer le même raisonnement à d’autres besoins.</div>
+        <div><strong>Rappel utile :</strong> dans la séance, les additifs peuvent agir sur la texture, le goût, la couleur ou la durée pendant laquelle un produit garde ses qualités. À toi de retrouver la bonne fonction à partir des indices.</div>
       </aside>
 
       <div id="lab-scenarios" class="lab-scenarios"></div>
@@ -129,44 +134,32 @@
       <div class="stage-heading">
         <div>
           <p class="kicker">ÉTAPE 3</p>
-          <h2>Enquête sur le niveau de transformation</h2>
-          <p>Trois défis pour comprendre comment une liste d’ingrédients peut renseigner sur le niveau de transformation d’un produit.</p>
+          <h2>Inspecteur des listes d’ingrédients</h2>
+          <p>Observe les trois listes ci-dessous. Cette fois, il faut chercher les indices dans les ingrédients avant de répondre.</p>
         </div>
         <div class="big-icon" aria-hidden="true">🔎</div>
       </div>
 
-      <aside class="source-card">
-        <strong>Indice de la séance :</strong> plus un produit est transformé, plus sa liste d’ingrédients est souvent longue ; un produit très transformé peut aussi contenir des additifs.
+      <div class="ingredient-dossiers">
+        <article class="ingredient-dossier">
+          <div class="ingredient-dossier__head"><span>🥭</span><strong>Compote pommes-mangues</strong></div>
+          <p><b>Ingrédients :</b> purée et morceaux de mangues 50 %, purée de pommes 49,8 %, arôme naturel, antioxydant : acide ascorbique.</p>
+        </article>
+        <article class="ingredient-dossier">
+          <div class="ingredient-dossier__head"><span>🥕</span><strong>Carottes râpées assaisonnées</strong></div>
+          <p><b>Ingrédients :</b> carottes 81 %, eau, huile d’olive, moutarde, vinaigre d’alcool, épices, jus d’orange concentré, sel, amidon transformé, épaississant : gomme xanthane, conservateur : sorbate de potassium.</p>
+        </article>
+        <article class="ingredient-dossier">
+          <div class="ingredient-dossier__head"><span>🥤</span><strong>Sirop de menthe</strong></div>
+          <p><b>Ingrédients :</b> sucre, eau, colorants : E150b, E133, arôme naturel de menthe.</p>
+        </article>
+      </div>
+
+      <aside class="source-card investigation-tip">
+        <strong>Conseil d’enquête :</strong> regarde le nombre d’ingrédients, les mots comme <em>colorant</em>, <em>conservateur</em>, <em>épaississant</em>, et les codes commençant par E.
       </aside>
 
-      <section class="subchallenge">
-        <div class="subchallenge__title"><span>1</span><div><strong>Du plus simple au plus transformé</strong><small>Place les trois produits dans l’ordre.</small></div></div>
-        <div id="rank-bank" class="rank-bank"></div>
-        <div class="rank-slots">
-          <section class="rank-slot" data-rank="1" tabindex="0" role="button">
-            <div class="rank-slot__head"><span>1</span><strong>Le moins transformé</strong></div>
-            <div id="rank-1" class="rank-slot__content"></div>
-          </section>
-          <section class="rank-slot" data-rank="2" tabindex="0" role="button">
-            <div class="rank-slot__head"><span>2</span><strong>Intermédiaire</strong></div>
-            <div id="rank-2" class="rank-slot__content"></div>
-          </section>
-          <section class="rank-slot" data-rank="3" tabindex="0" role="button">
-            <div class="rank-slot__head"><span>3</span><strong>Le plus transformé</strong></div>
-            <div id="rank-3" class="rank-slot__content"></div>
-          </section>
-        </div>
-      </section>
-
-      <section class="subchallenge">
-        <div class="subchallenge__title"><span>2</span><div><strong>Compare les produits</strong><small>Dans chaque duel, choisis le produit le plus transformé.</small></div></div>
-        <div id="compare-grid" class="compare-grid"></div>
-      </section>
-
-      <section class="subchallenge">
-        <div class="subchallenge__title"><span>3</span><div><strong>Repère les bons indices</strong><small>Sélectionne les deux indices qui peuvent montrer qu’un produit est très transformé.</small></div></div>
-        <div id="clue-grid" class="clue-grid"></div>
-      </section>
+      <div id="inspection-questions" class="inspection-questions"></div>
 
       <div class="actions">
         <button class="btn btn--primary" id="check-3">Vérifier</button>
@@ -175,12 +168,82 @@
       <div id="feedback-3" class="feedback" aria-live="polite"></div>
     </section>
 
+    <section id="stage-4" class="game-stage is-hidden" data-stage-panel="4">
+      <div class="stage-heading">
+        <div>
+          <p class="kicker">ÉTAPE 4 · TRACE ÉCRITE</p>
+          <h2>Complète la trace écrite</h2>
+          <p>Touche un mot, puis le trou correspondant. Pour retirer un mot déjà placé, touche simplement le trou.</p>
+        </div>
+        <div class="trace-art" aria-hidden="true">✎</div>
+      </div>
+
+      <aside class="trace-help">
+        <strong>14 mots à replacer.</strong> Tous les mots sont utilisés une seule fois et leur ordre change à chaque nouvelle tentative.
+      </aside>
+
+      <div id="cloze-bank" class="cloze-bank" aria-label="Mots à replacer"></div>
+
+      <article class="cloze-text" aria-label="Trace écrite à compléter">
+        <h3>Les types d’aliments</h3>
+        <p>
+          On peut classer les aliments en
+          <button class="cloze-slot" data-slot="trois" type="button">…</button> catégories :
+        </p>
+
+        <p>
+          <strong>1-Les</strong>
+          <button class="cloze-slot" data-slot="produits-agricoles" type="button">…</button> :
+          ce sont des aliments qui viennent directement de la
+          <button class="cloze-slot" data-slot="nature" type="button">…</button>
+          (agriculture ou élevage).<br>
+          Exemples : une pomme, du lait, une
+          <button class="cloze-slot" data-slot="carotte" type="button">…</button>.
+        </p>
+
+        <p>
+          <strong>2-Les</strong>
+          <button class="cloze-slot" data-slot="produits-transformes" type="button">…</button> :
+          ce sont des aliments
+          <button class="cloze-slot" data-slot="fabriques" type="button">…</button>
+          à partir de produits agricoles.<br>
+          Exemples : du
+          <button class="cloze-slot" data-slot="pain" type="button">…</button>,
+          du yaourt, de la compote.
+        </p>
+
+        <p>
+          <strong>3-Les</strong>
+          <button class="cloze-slot" data-slot="additifs" type="button">…</button> :
+          ce sont des produits fabriqués par l’
+          <button class="cloze-slot" data-slot="industrie" type="button">…</button>
+          et ajoutés aux aliments. Ils servent à
+          <button class="cloze-slot" data-slot="conserver" type="button">…</button>
+          plus longtemps, à donner du
+          <button class="cloze-slot" data-slot="gout" type="button">…</button>,
+          de la
+          <button class="cloze-slot" data-slot="couleur" type="button">…</button>
+          ou une
+          <button class="cloze-slot" data-slot="texture" type="button">…</button>.<br>
+          Exemples : conservateurs,
+          <button class="cloze-slot" data-slot="colorants" type="button">…</button>,
+          épaississants.
+        </p>
+      </article>
+
+      <div class="actions">
+        <button class="btn btn--primary" id="check-4">Vérifier</button>
+        <button class="btn btn--ghost" id="reset-4">Réinitialiser l’étape</button>
+      </div>
+      <div id="feedback-4" class="feedback" aria-live="polite"></div>
+    </section>
+
     <section id="final-card" class="final-card is-hidden" aria-live="polite">
       <div class="final-card__badge">★</div>
       <div>
         <p class="kicker">MISSION RÉUSSIE</p>
-        <h2>Bravo ! Les trois étapes sont validées.</h2>
-        <p>Tu sais distinguer produits agricoles, produits transformés et additifs, et expliquer plusieurs rôles des additifs.</p>
+        <h2>Bravo ! Les quatre étapes sont validées.</h2>
+        <p>Tu sais distinguer produits agricoles, produits transformés et additifs, expliquer le rôle des additifs et compléter la trace écrite.</p>
       </div>
     </section>
 
@@ -188,6 +251,6 @@
   </main>
 
   <footer class="footer">Géographie CM1 · Se nourrir · Ingrédients et additifs</footer>
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@ button{font:inherit;touch-action:manipulation}.is-hidden{display:none!important}
 .eyebrow,.kicker{font-weight:900;letter-spacing:.11em;font-size:.78rem}.eyebrow{color:#cdecea;margin-bottom:8px}
 h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-width:850px}.hero p{font-size:1.06rem;max-width:800px;margin:0;color:#e8f6f5}.hero__art{width:100%;max-width:260px;justify-self:end;filter:drop-shadow(0 12px 20px rgba(0,0,0,.14))}
 .shell{max-width:1180px;margin:0 auto;padding:26px 24px 54px}
-.mission-board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:4px 0 18px}
+.mission-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:4px 0 18px}
 .stage-tab{border:2px solid var(--line);background:#fff;border-radius:18px;padding:14px;text-align:left;display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;color:var(--ink);box-shadow:0 4px 14px rgba(23,52,58,.05);min-height:86px;cursor:pointer}
 .stage-tab:disabled{opacity:.58;cursor:not-allowed}.stage-tab.is-active{border-color:var(--teal);box-shadow:0 0 0 3px rgba(23,107,120,.09)}.stage-tab.is-done{border-color:var(--ok);background:var(--ok-soft)}
 .stage-tab__num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-weight:900}.stage-tab.is-done .stage-tab__num{background:var(--ok);color:#fff}
@@ -62,3 +62,48 @@ h1{font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;margin:.15em 0 .35em;max-wi
 .compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.compare-card{border:1px solid #d7e8e6;border-radius:16px;padding:14px;background:#fbfdfd}.compare-card__q{display:grid;grid-template-columns:32px 1fr;gap:9px;align-items:start;margin-bottom:12px}.compare-options{display:grid;gap:8px}.compare-option{text-align:left}.clue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.clue-card{text-align:left;min-height:68px}
 @media(max-width:900px){.lab-scenarios{grid-template-columns:1fr}.compare-grid{grid-template-columns:1fr}.clue-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.lab-source{grid-template-columns:92px 1fr}.lab-source img{height:90px}.lab-options,.clue-grid{grid-template-columns:1fr}.compare-card__q{grid-template-columns:30px 1fr}}
+
+
+/* V4 — étape finale : trace écrite à trous */
+.trace-art{justify-self:end;width:82px;height:82px;border-radius:24px;display:grid;place-items:center;background:var(--cream);border:2px solid #f1d991;font-size:2.5rem;font-weight:900;color:var(--teal)}
+.trace-help{background:var(--cream);border:1px solid #f4d88f;border-radius:16px;padding:13px 15px;margin-bottom:15px;color:#72530c}
+.cloze-bank{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;padding:14px;background:#f8fbfb;border:1px dashed #bcd5d2;border-radius:17px;min-height:82px;margin-bottom:17px}
+.cloze-word{border:2px solid #d8e5e4;background:#fff;border-radius:12px;padding:10px 8px;min-height:46px;font-weight:850;cursor:pointer;color:var(--ink)}
+.cloze-word.is-selected{border-color:var(--teal);background:var(--teal-soft);box-shadow:0 0 0 3px rgba(23,107,120,.10)}
+.cloze-text{background:#fff;border:1px solid #dfeae9;border-radius:18px;padding:20px}
+.cloze-text h3{margin:0 0 15px;color:var(--teal);font-size:1.3rem}
+.cloze-text p{margin:0 0 13px;font-size:1.03rem;line-height:2.05}
+.cloze-text p:last-child{margin-bottom:0}
+.cloze-slot{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;min-width:90px;min-height:38px;margin:2px 3px;padding:5px 10px;border:2px dashed #9ebfbb;border-radius:10px;background:#f8fbfb;color:var(--teal);font-weight:900;cursor:pointer;line-height:1.1}
+.cloze-slot[data-slot="produits-agricoles"],.cloze-slot[data-slot="produits-transformes"]{min-width:150px}
+.cloze-slot.is-filled{border-style:solid;background:var(--teal-soft)}
+.cloze-slot.is-correct{border-color:var(--ok);background:var(--ok-soft);color:#256e4e}
+.cloze-slot.is-wrong{border-color:var(--bad);background:var(--bad-soft);color:#8d3030}
+
+@media(max-width:900px){
+ .cloze-bank{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:620px){
+ .trace-art{width:70px;height:70px;font-size:2rem}
+ .cloze-bank{grid-template-columns:repeat(2,1fr)}
+ .cloze-text{padding:15px}
+ .cloze-text p{font-size:.97rem;line-height:2}
+ .cloze-slot{min-width:74px;min-height:36px;padding:5px 7px;margin:2px 1px}
+ .cloze-slot[data-slot="produits-agricoles"],.cloze-slot[data-slot="produits-transformes"]{min-width:125px}
+}
+@media(max-width:390px){
+ .trace-art{display:none}
+ .cloze-text p{font-size:.93rem}
+ .cloze-slot{min-width:68px}
+}
+
+
+/* V5 — davantage de recherche/réflexion dans les étapes 2 et 3 */
+.ingredient-dossiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:15px}
+.ingredient-dossier{background:#fff;border:1px solid #d7e8e6;border-radius:16px;padding:14px;box-shadow:0 4px 12px rgba(23,52,58,.04)}
+.ingredient-dossier__head{display:flex;align-items:center;gap:9px;padding-bottom:9px;margin-bottom:8px;border-bottom:1px solid #e7efee}.ingredient-dossier__head span{font-size:1.5rem}.ingredient-dossier p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}
+.investigation-tip{margin-top:4px}
+.inspection-questions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.inspection-card{border:1px solid #dce9e7;border-radius:16px;padding:14px;background:#fff}.inspection-card__head{display:grid;grid-template-columns:34px 1fr;gap:9px;align-items:start;margin-bottom:10px}.inspection-card__head span{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-weight:900}.inspection-card__head strong{line-height:1.3}
+.inspection-options{display:grid;gap:7px}.inspection-option{border:2px solid #d8e5e4;background:#fff;border-radius:12px;padding:10px;text-align:left;cursor:pointer;font-weight:780}.inspection-option.is-selected{border-color:var(--teal);background:var(--teal-soft)}.inspection-option.is-correct{border-color:var(--ok);background:var(--ok-soft)}.inspection-option.is-wrong{border-color:var(--bad);background:var(--bad-soft)}
+@media(max-width:900px){.ingredient-dossiers{grid-template-columns:1fr}.inspection-questions{grid-template-columns:1fr}}
