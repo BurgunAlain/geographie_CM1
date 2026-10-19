@@ -146,7 +146,8 @@ function renderSort(){
   // Chaque catégorie affiche TOUJOURS 10 emplacements visibles.
   // On voit donc immédiatement qu'il y a de la place pour les 10 réponses.
   function fillSlots(container, ids){
-    for(let i=0;i<10;i++){
+    const slotCount=Math.max(10,ids.length);
+    for(let i=0;i<slotCount;i++){
       const slot=document.createElement('div');
       slot.className='sort-slot';
       if(ids[i]){
@@ -192,6 +193,7 @@ qs('#check-1').addEventListener('click',()=>{
   });
   if(!all){
     stageState[1].hadError=true;
+    qs('#restart-1').classList.remove('is-hidden');
     report(1,'bad','Au moins un aliment est mal classé ou n’a pas encore été placé. Touche un aliment mal placé pour le retirer, puis replace-le dans la bonne catégorie. Cette tentative ne pourra plus être validée.');
     return;
   }
@@ -285,6 +287,7 @@ qs('#check-2').addEventListener('click',()=>{
 
   if(!all){
     stageState[2].hadError=true;
+    qs('#restart-2').classList.remove('is-hidden');
     report(2,'bad','Au moins un duo n’est pas correct ou manque. Touche une carte associée pour la libérer, puis essaie de nouveau. Cette tentative devient un entraînement.');
     return;
   }
@@ -386,6 +389,7 @@ qs('#check-3').addEventListener('click',()=>{
 
   if(!all){
     stageState[3].hadError=true;
+    qs('#restart-3').classList.remove('is-hidden');
     report(3,'bad','Au moins un défi comporte une réponse en trop ou une réponse manquante. Corrige tes choix : cette tentative sert maintenant d’entraînement.');
     return;
   }
