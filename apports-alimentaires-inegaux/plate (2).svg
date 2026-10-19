@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 180" role="img" aria-label="Assiette et aliments">
+  <rect width="260" height="180" rx="24" fill="#fff8ea"/>
+  <circle cx="116" cy="91" r="57" fill="#ffffff" stroke="#176b78" stroke-width="5"/>
+  <circle cx="116" cy="91" r="42" fill="#f8fbfb" stroke="#b8dcda" stroke-width="2"/>
+  <path d="M82 89c8-20 32-30 50-16 11 9 10 26-4 34-17 10-40 0-46-18z" fill="#f4b942"/>
+  <circle cx="104" cy="79" r="9" fill="#fff3bf"/>
+  <path d="M127 105c12-14 27-14 36-2-11 12-24 17-38 12z" fill="#6dbf8b"/>
+  <path d="M73 112c9-9 19-11 29-5-2 12-12 21-25 23z" fill="#e57d6f"/>
+  <path d="M198 47v90M187 47v90M209 47v90" stroke="#176b78" stroke-width="4" stroke-linecap="round"/>
+  <path d="M183 48h30M183 58h30" stroke="#176b78" stroke-width="3" stroke-linecap="round"/>
+</svg>
