@@ -35,6 +35,14 @@ function foodCard(f){const b=document.createElement("button");b.type="button";b.
 function render1(){const bank=qs("#food-bank"),bins={local:qs("#bin-local"),france:qs("#bin-france"),import:qs("#bin-import")};bank.innerHTML="";Object.values(bins).forEach(x=>x.innerHTML="");foodOrder.forEach(f=>(foodPlace[f.id]?bins[foodPlace[f.id]]:bank).appendChild(foodCard(f)));["local","france","import"].forEach(k=>qs("#count-"+k).textContent=Object.values(foodPlace).filter(v=>v===k).length)}
 function placeFood(cat){if(!selectedFood)return;foodPlace[selectedFood]=cat;selectedFood=null;clearFeedback(1);render1()}
 qsa(".bin").forEach(b=>{b.onclick=()=>placeFood(b.dataset.bin);b.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();placeFood(b.dataset.bin)}}});
+qsa(".bin-drop-button").forEach(b=>{
+  b.onclick=e=>{e.stopPropagation();placeFood(b.dataset.dropBin)};
+  b.onkeydown=e=>{
+    if(e.key==="Enter"||e.key===" "){
+      e.preventDefault();e.stopPropagation();placeFood(b.dataset.dropBin)
+    }
+  };
+});
 function reset1(){state[1].error=false;selectedFood=null;foodOrder=shuffledDifferent(foods);foodPlace={};foods.forEach(f=>foodPlace[f.id]=null);clearFeedback(1);render1()}
 qs("#reset1").onclick=reset1;
 qs("#check1").onclick=()=>{let all=true;foods.forEach(f=>{const el=qs(`[data-food="${f.id}"]`);const ok=foodPlace[f.id]===f.cat;if(el){el.classList.remove("correct","wrong");el.classList.add(ok?"correct":"wrong")}if(!ok)all=false});if(!all){state[1].error=true;feedback(1,"bad","Il reste au moins une erreur ou un aliment non classé. Corrige, puis réinitialise l’étape pour tenter un sans-faute.");return}if(state[1].error)feedback(1,"train","Tout est maintenant correct. Réinitialise l’étape et refais-la sans erreur pour la valider.");else{feedback(1,"ok","Sans-faute ! Étape 1 validée.");complete(1)}};

@@ -35,3 +35,59 @@
 /* QA fix: les blocs avec haut-parleur ne doivent jamais élargir leur conteneur */
 .tts-pad{box-sizing:border-box!important;min-width:0!important;max-width:100%}
 .tts-host{min-width:0}
+
+
+/* V4 — capacité réelle des zones de classement : 7 locaux / 1 France / 4 importés */
+.three-bins{
+  grid-template-columns:minmax(0,1.55fr) minmax(0,.78fr) minmax(0,1.18fr);
+  align-items:stretch;
+}
+.bin{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.bin .dropzone{
+  flex:1 1 auto;
+  min-height:150px;
+}
+.bin[data-bin="local"] .dropzone{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.bin[data-bin="france"] .dropzone{
+  grid-template-columns:1fr;
+}
+.bin[data-bin="import"] .dropzone{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+.bin-drop-button{
+  width:100%;
+  min-height:44px;
+  margin-top:10px;
+  border:2px dashed #9fc9c4;
+  border-radius:12px;
+  background:#eef8f6;
+  color:var(--teal);
+  font-weight:900;
+  cursor:pointer;
+}
+.bin-drop-button:hover,.bin-drop-button:focus{
+  outline:none;
+  border-color:var(--teal);
+  background:#e2f3f0;
+  box-shadow:0 0 0 3px rgba(23,107,120,.10);
+}
+@media(max-width:900px){
+  .three-bins{grid-template-columns:1fr}
+  .bin .dropzone{min-height:80px}
+  .bin[data-bin="local"] .dropzone{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bin[data-bin="france"] .dropzone{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bin[data-bin="import"] .dropzone{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:640px){
+  .bin[data-bin="local"] .dropzone,
+  .bin[data-bin="france"] .dropzone,
+  .bin[data-bin="import"] .dropzone{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
