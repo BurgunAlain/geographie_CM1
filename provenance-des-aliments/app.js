@@ -37,7 +37,7 @@ function placeFood(cat){if(!selectedFood)return;foodPlace[selectedFood]=cat;sele
 qsa(".bin").forEach(b=>{b.onclick=()=>placeFood(b.dataset.bin);b.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();placeFood(b.dataset.bin)}}});
 function reset1(){state[1].error=false;selectedFood=null;foodOrder=shuffledDifferent(foods);foodPlace={};foods.forEach(f=>foodPlace[f.id]=null);clearFeedback(1);render1()}
 qs("#reset1").onclick=reset1;
-qs("#check1").onclick=()=>{let all=true;foods.forEach(f=>{const el=qs(`[data-food="${f.id}"]`);const ok=foodPlace[f.id]===f.cat;el?.classList.add(ok?"correct":"wrong");if(!ok)all=false});if(!all){state[1].error=true;feedback(1,"bad","Il reste au moins une erreur ou un aliment non classé. Corrige, puis réinitialise l’étape pour tenter un sans-faute.");return}if(state[1].error)feedback(1,"train","Tout est maintenant correct. Réinitialise l’étape et refais-la sans erreur pour la valider.");else{feedback(1,"ok","Sans-faute ! Étape 1 validée.");complete(1)}};
+qs("#check1").onclick=()=>{let all=true;foods.forEach(f=>{const el=qs(`[data-food="${f.id}"]`);const ok=foodPlace[f.id]===f.cat;if(el){el.classList.remove("correct","wrong");el.classList.add(ok?"correct":"wrong")}if(!ok)all=false});if(!all){state[1].error=true;feedback(1,"bad","Il reste au moins une erreur ou un aliment non classé. Corrige, puis réinitialise l’étape pour tenter un sans-faute.");return}if(state[1].error)feedback(1,"train","Tout est maintenant correct. Réinitialise l’étape et refais-la sans erreur pour la valider.");else{feedback(1,"ok","Sans-faute ! Étape 1 validée.");complete(1)}};
 
 // STEP 2
 let routeFoodOrder=[],distanceOrder=[],routeFoodPlace={},distancePlace={},selectedRoute=null;
