@@ -1,1 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#176b78">
+<title>Le tour du monde des aliments bruts — Géographie CM1</title>
+<link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+<header class="hero">
+  <div class="hero__inner">
+    <div class="hero__copy readable">
+      <p class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</p>
+      <h1>Le tour du monde des aliments bruts</h1>
+      <p>Associe chaque aliment à un pays producteur et repère les continents sur le planisphère.</p>
+    </div>
+    <img src="globe.svg" class="hero__art" alt="">
+  </div>
+</header>
 
+<main class="shell">
+  <nav class="stage-tabs" aria-label="Étapes du jeu">
+    <button class="stage-tab is-active" data-stage="1">
+      <span class="stage-tab__num">1</span>
+      <span><strong>Défi sans indice</strong><small>Aliment → pays producteur</small></span>
+      <em data-status="1">À faire</em>
+    </button>
+    <button class="stage-tab" data-stage="2" disabled>
+      <span class="stage-tab__num">2</span>
+      <span><strong>Défi avec indices</strong><small>Continent + localisation</small></span>
+      <em data-status="2">Verrouillé</em>
+    </button>
+  </nav>
+
+  <aside class="rule-card readable">
+    <strong>Règle du sans-faute :</strong>
+    une étape est validée seulement si toutes les réponses sont justes lors d’une même tentative,
+    puis après avoir cliqué sur <b>Vérifier</b>. Après une erreur, tu peux corriger pour apprendre,
+    mais tu dois ensuite réinitialiser l’étape et la réussir entièrement sans faute.
+  </aside>
+
+  <aside class="source-note readable">
+    <strong>À savoir :</strong> chaque aliment est associé ici à <b>un pays producteur important parmi plusieurs possibles</b>.
+    Cela ne veut pas dire qu’il est produit uniquement dans ce pays.
+  </aside>
+
+  <section class="continent-strip" aria-label="Continents repères">
+    <span class="continent-chip" data-speak="Europe">EUROPE <button class="speaker" type="button" data-speak="Europe" aria-label="Lire Europe">🔊</button></span>
+    <span class="continent-chip" data-speak="Afrique">AFRIQUE <button class="speaker" type="button" data-speak="Afrique" aria-label="Lire Afrique">🔊</button></span>
+    <span class="continent-chip" data-speak="Asie">ASIE <button class="speaker" type="button" data-speak="Asie" aria-label="Lire Asie">🔊</button></span>
+    <span class="continent-chip" data-speak="Amérique">AMÉRIQUE <button class="speaker" type="button" data-speak="Amérique" aria-label="Lire Amérique">🔊</button></span>
+    <span class="continent-chip" data-speak="Océanie">OCÉANIE <button class="speaker" type="button" data-speak="Océanie" aria-label="Lire Océanie">🔊</button></span>
+  </section>
+
+  <section id="stage-1" class="stage">
+    <div class="stage-heading">
+      <div class="readable">
+        <p class="kicker">ÉTAPE 1 · DIFFICILE</p>
+        <h2>Sans indice : retrouve le pays producteur</h2>
+        <p>Glisse chaque aliment sur le nom du pays correspondant. Sur tablette, tu peux aussi toucher l’aliment puis toucher le pays. Un aliment déjà placé peut être retiré en le touchant.</p>
+      </div>
+      <div class="difficulty">★★★</div>
+    </div>
+
+    <h3 class="bank-title">Aliments bruts <small>— ordre mélangé à chaque tentative</small></h3>
+    <div id="food-bank-1" class="food-bank"></div>
+
+    <div class="map-hint readable">↔ Sur tablette ou téléphone, fais défiler la carte horizontalement si nécessaire.</div>
+    <div class="map-scroll">
+      <div id="map-1" class="map-canvas"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="check-1" type="button">Vérifier</button>
+      <button class="btn btn--ghost" id="reset-1" type="button">Réinitialiser l’étape</button>
+    </div>
+    <div id="feedback-1" class="feedback" aria-live="polite"></div>
+  </section>
+
+  <section id="stage-2" class="stage is-hidden">
+    <div class="stage-heading">
+      <div class="readable">
+        <p class="kicker">ÉTAPE 2 · AVEC INDICES</p>
+        <h2>Enquête géographique</h2>
+        <p>Pour chaque aliment, utilise les indices pour retrouver son pays producteur. Le premier indice donne le continent ; les suivants précisent la localisation. Essaie d’utiliser le moins d’indices possible.</p>
+      </div>
+      <div class="difficulty difficulty--easy">★★☆</div>
+    </div>
+
+    <div id="clue-panel" class="clue-panel"></div>
+
+    <div class="map-hint readable">↔ Sur tablette ou téléphone, fais défiler la carte horizontalement si nécessaire.</div>
+    <div class="map-scroll">
+      <div id="map-2" class="map-canvas"></div>
+    </div>
+
+    <div class="review-wrap">
+      <h3>Revoir mes réponses</h3>
+      <div id="review-strip" class="review-strip"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="check-2" type="button">Vérifier</button>
+      <button class="btn btn--ghost" id="reset-2" type="button">Réinitialiser l’étape</button>
+    </div>
+    <div id="feedback-2" class="feedback" aria-live="polite"></div>
+  </section>
+
+  <section id="final-card" class="final-card is-hidden">
+    <div class="final-star">★</div>
+    <div class="readable">
+      <p class="kicker">MISSION RÉUSSIE</p>
+      <h2>Le tour du monde est terminé !</h2>
+      <p>Tu sais associer des aliments bruts à des pays producteurs et situer ces pays dans les grands continents.</p>
+    </div>
+  </section>
+
+  <section id="knowledge-summary" class="knowledge-summary is-hidden">
+    <div class="readable">
+      <p class="kicker">À RETENIR</p>
+      <h2>Les associations du jeu</h2>
+      <p>Ces pays sont des exemples de pays producteurs : les mêmes aliments peuvent aussi être produits ailleurs dans le monde.</p>
+    </div>
+    <div id="summary-grid" class="summary-grid"></div>
+  </section>
+</main>
+
+<footer>
+  Géographie CM1 · Se nourrir · Pays producteurs et continents
+</footer>
+<script src="app.js?v=1"></script>
+<script src="speech.js?v=1"></script>
+</body>
+</html>
