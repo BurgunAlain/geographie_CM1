@@ -13,12 +13,62 @@
 
 <section id="stage1" class="stage">
 <div class="stage-head"><div class="readable"><p class="kicker">ÉTAPE 1</p><h2>Les métiers de la chaîne</h2><p>Lis les témoignages puis attribue chaque action à la bonne personne. Touche une action puis le personnage correspondant. Une action déjà placée peut être retirée.</p></div><div class="head-icon">👥</div></div>
-<details class="docs"><summary>Consulter les quatre témoignages</summary><div class="witness-grid">
-<article class="witness readable"><img src="marc.webp" alt="Marc à la ferme"><h3>Marc - éleveur de vaches laitières</h3><p>Chaque jour, il nourrit ses vaches, vérifie leur santé et nettoie leur espace. Deux fois par jour, il fait la traite. Le lait est ensuite stocké dans un grand réservoir réfrigéré pour rester frais et propre.</p></article>
-<article class="witness readable"><img src="nadia.webp" alt="Nadia avec son camion-citerne"><h3>Nadia - conductrice de camion-citerne</h3><p>Elle vient chercher le lait à la ferme de Marc. Son camion le maintient à une température froide pour éviter qu’il ne s’abîme, puis elle le transporte jusqu’à la laiterie.</p></article>
-<article class="witness readable"><img src="julien.webp" alt="Julien dans la laiterie"><h3>Julien - employé de la laiterie</h3><p>À la laiterie, le lait est transformé en yaourt : il est chauffé, on ajoute des ferments, puis le yaourt est mis en pots, fermé, étiqueté et stocké au frais avant l’envoi.</p></article>
-<article class="witness readable"><img src="sophie.webp" alt="Sophie au supermarché"><h3>Sophie - employée du supermarché</h3><p>Elle reçoit les yaourts, les met en rayon dans les réfrigérateurs et vérifie les dates de péremption.</p></article>
-</div></details>
+<section class="witness-dossier">
+  <div class="witness-dossier__head readable">
+    <h3>Les quatre témoignages complets</h3>
+    <p>Consulte chaque document dans son intégralité : l’illustration et toute l’interview sont conservées. Tu peux aussi écouter le témoignage complet avec le haut-parleur.</p>
+  </div>
+  <div class="witness-tabs" role="tablist" aria-label="Choisir un témoignage">
+    <button type="button" class="witness-tab is-active" data-witness="marc" role="tab" aria-selected="true">Marc</button>
+    <button type="button" class="witness-tab" data-witness="nadia" role="tab" aria-selected="false">Nadia</button>
+    <button type="button" class="witness-tab" data-witness="julien" role="tab" aria-selected="false">Julien</button>
+    <button type="button" class="witness-tab" data-witness="sophie" role="tab" aria-selected="false">Sophie</button>
+  </div>
+
+  <article class="witness-full" data-witness-panel="marc">
+    <img src="marc-complet.webp" alt="Document complet : Marc, éleveur de vaches laitières en Normandie" loading="lazy">
+    <div class="witness-transcript readable">
+      <h3>Marc — éleveur de vaches laitières</h3>
+      <p><strong>Intervieweur :</strong> Bonjour Marc, pouvez-vous vous présenter et nous parler de votre métier ?</p>
+      <p><strong>Marc :</strong> Bonjour, moi c’est Marc, je suis éleveur de vaches laitières en Normandie.</p>
+      <p><strong>Intervieweur :</strong> Que faites-vous au quotidien avec vos vaches ?</p>
+      <p><strong>Marc :</strong> Chaque jour, je m’occupe de mes vaches : je les nourris, je vérifie qu’elles sont en bonne santé et je nettoie leur espace de vie. Deux fois par jour, je fais la traite, c’est-à-dire que je récupère le lait qu’elles produisent. Ce lait est ensuite stocké dans un grand réservoir réfrigéré pour rester frais et propre.</p>
+    </div>
+  </article>
+
+  <article class="witness-full hidden" data-witness-panel="nadia">
+    <img src="nadia-complet.webp" alt="Document complet : Nadia, conductrice de camion-citerne" loading="lazy">
+    <div class="witness-transcript readable">
+      <h3>Nadia — conductrice de camion-citerne</h3>
+      <p><strong>Intervieweur :</strong> Bonjour Nadia, pouvez-vous vous présenter ?</p>
+      <p><strong>Nadia :</strong> Bonjour, moi c’est Nadia, je suis conductrice de camion-citerne.</p>
+      <p><strong>Intervieweur :</strong> Quel est votre rôle dans le transport du lait ?</p>
+      <p><strong>Nadia :</strong> Je viens chercher le lait directement à la ferme de Marc. Mon camion est spécialement conçu pour transporter du lait dans de bonnes conditions. Il est propre et maintenu à une température froide pour éviter que le lait ne s’abîme. Je le transporte ensuite jusqu’à la laiterie. Je dois être très rigoureuse, car le lait est un produit fragile.</p>
+    </div>
+  </article>
+
+  <article class="witness-full hidden" data-witness-panel="julien">
+    <img src="julien-complet.webp" alt="Document complet : Julien travaille dans une laiterie" loading="lazy">
+    <div class="witness-transcript readable">
+      <h3>Julien — employé de la laiterie</h3>
+      <p><strong>Intervieweur :</strong> Bonjour Julien, pouvez-vous vous présenter ?</p>
+      <p><strong>Julien :</strong> Bonjour, moi c’est Julien, je travaille dans une laiterie.</p>
+      <p><strong>Intervieweur :</strong> Que faites-vous à la laiterie ?</p>
+      <p><strong>Julien :</strong> À la laiterie, nous transformons le lait en yaourt. Nous commençons par chauffer le lait, puis nous ajoutons des ferments, ce sont de bonnes bactéries qui permettent de fabriquer le yaourt. Ensuite, le yaourt est mis en pots, refermé avec un couvercle et étiqueté. Les yaourts sont ensuite stockés au frais avant d’être envoyés dans les magasins.</p>
+    </div>
+  </article>
+
+  <article class="witness-full hidden" data-witness-panel="sophie">
+    <img src="sophie-complet.webp" alt="Document complet : Sophie travaille dans un supermarché" loading="lazy">
+    <div class="witness-transcript readable">
+      <h3>Sophie — employée du supermarché</h3>
+      <p><strong>Intervieweur :</strong> Bonjour Sophie, pouvez-vous vous présenter ?</p>
+      <p><strong>Sophie :</strong> Bonjour, moi c’est Sophie, je travaille dans un supermarché.</p>
+      <p><strong>Intervieweur :</strong> Quel est votre rôle dans le supermarché ?</p>
+      <p><strong>Sophie :</strong> Je reçois les yaourts qui arrivent de la laiterie. Mon rôle est de les mettre en rayon, dans les réfrigérateurs, pour que les clients puissent les acheter. Je vérifie aussi les dates de péremption pour m’assurer que les yaourts sont encore bons à consommer. Grâce à ce travail, les yaourts arrivent jusqu’à vous.</p>
+    </div>
+  </article>
+</section>
 <h3 class="bank-title">Actions à attribuer <small>- ordre mélangé</small></h3><div id="action-bank" class="action-bank"></div>
 <div id="people-zones" class="people-zones"></div>
 <div class="actions"><button class="btn primary" id="check1">Vérifier</button><button class="btn secondary" id="reset1">Réinitialiser l’étape</button></div><div id="feedback1" class="feedback" aria-live="polite"></div>
@@ -44,4 +94,4 @@
 </section>
 
 <section id="final" class="final hidden"><div class="star">★</div><div class="readable"><p class="kicker">MISSION RÉUSSIE</p><h2>Bravo !</h2><p>Tu sais expliquer la chaîne de production d’un yaourt, de la traite jusqu’au magasin.</p></div><img src="trace-complete.webp" alt="Trace écrite complète des huit étapes de fabrication du yaourt"></section>
-</main><footer>Géographie CM1 · Se nourrir · La chaîne de production du yaourt</footer><script src="app.js?v=3"></script><script src="speech.js?v=3"></script></body></html>
+</main><footer>Géographie CM1 · Se nourrir · La chaîne de production du yaourt</footer><script src="app.js?v=3"></script><script src="speech.js?v=4"></script></body></html>

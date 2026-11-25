@@ -10,6 +10,19 @@ function showStage(n){[1,2,3,4].forEach(i=>qs('#stage'+i).classList.toggle('hidd
 qsa('.tab').forEach(t=>t.onclick=()=>{if(!t.disabled)showStage(+t.dataset.go)});
 function complete(n){state[n].done=true;const t=qs(`[data-go="${n}"]`);t.classList.add('done');qs(`[data-status="${n}"]`).textContent='Validé ✓';if(n<4){const nt=qs(`[data-go="${n+1}"]`);nt.disabled=false;qs(`[data-status="${n+1}"]`).textContent='À faire'}else qs('#final').classList.remove('hidden')}
 
+
+// DOSSIER DES TÉMOIGNAGES COMPLETS
+function showWitness(id){
+  qsa('.witness-tab').forEach(b=>{
+    const active=b.dataset.witness===id;
+    b.classList.toggle('is-active',active);
+    b.setAttribute('aria-selected',active?'true':'false');
+  });
+  qsa('[data-witness-panel]').forEach(p=>p.classList.toggle('hidden',p.dataset.witnessPanel!==id));
+}
+qsa('.witness-tab').forEach(b=>b.addEventListener('click',()=>showWitness(b.dataset.witness)));
+showWitness('marc');
+
 // STEP 1
 const people=[{id:'marc',name:'Marc',job:'Éleveur de vaches laitières'},{id:'nadia',name:'Nadia',job:'Conductrice de camion-citerne'},{id:'julien',name:'Julien',job:'Employé de la laiterie'},{id:'sophie',name:'Sophie',job:'Employée du supermarché'}];
 const actions=[
@@ -50,6 +63,34 @@ let lorder=[],lplace={},lselected=null;const words=['lait','laiterie','magasin']
 function labelChip(x){const d=document.createElement('div');d.className='label-chip'+(lselected===x.id?' selected':'');d.dataset.label=x.id;d.tabIndex=0;d.setAttribute('role','button');d.innerHTML=`<span>${x.text}</span>${speaker(x.text)}`;d.onclick=e=>{if(e.target.closest('.speaker'))return;if(lplace[x.id]){lplace[x.id]=null;lselected=null;render4();return}lselected=lselected===x.id?null:x.id;render4()};return d}
 function wordChip(w){const d=document.createElement('div');d.className='word-chip'+(wselected===w?' selected':'');d.dataset.word=w;d.tabIndex=0;d.setAttribute('role','button');d.innerHTML=`<span>${w}</span>${speaker(w)}`;d.onclick=e=>{if(e.target.closest('.speaker'))return;const slot=Object.keys(wplace).find(k=>wplace[k]===w);if(slot){wplace[slot]=null;wselected=null;render4();return}wselected=wselected===w?null:w;render4()};return d}
 function render4(){const bank=qs('#label-bank');bank.innerHTML='';lorder.forEach(id=>{if(!lplace[id])bank.appendChild(labelChip(labels.find(x=>x.id===id)))});const slots=qs('#trace-slots');slots.innerHTML='';for(let n=1;n<=8;n++){const s=document.createElement('div');s.className='trace-slot';s.dataset.rank=n;s.tabIndex=0;s.innerHTML=`<strong>${n}</strong>`;const id=Object.keys(lplace).find(id=>lplace[id]===n);if(id)s.appendChild(labelChip(labels.find(x=>x.id===id)));s.onclick=e=>{if(e.target.closest('.label-chip'))return;if(lselected){Object.keys(lplace).forEach(id=>{if(lplace[id]===n)lplace[id]=null});lplace[lselected]=n;lselected=null;render4()}};slots.appendChild(s)}const wb=qs('#summary-bank');wb.innerHTML='';worder.forEach(w=>{if(!Object.values(wplace).includes(w))wb.appendChild(wordChip(w))});qsa('.cloze').forEach(c=>{const v=wplace[c.dataset.slot];c.textContent=v||'…';c.classList.toggle('filled',!!v);c.classList.remove('correct','wrong');c.onclick=()=>{if(wselected){const old=Object.keys(wplace).find(k=>wplace[k]===wselected);if(old)wplace[old]=null;wplace[c.dataset.slot]=wselected;wselected=null;render4()}else if(v){wplace[c.dataset.slot]=null;render4()}}});const sp=qs('.summary-sentence>.speaker');if(sp){sp.dataset.speak=`Le yaourt est fabriqué à partir du ${wplace.lait||'mot à compléter'}, transformé à la ${wplace.laiterie||'mot à compléter'}, puis envoyé au ${wplace.magasin||'mot à compléter'}.`}}
-function reset4(){state[4].error=false;lselected=null;lplace={};labels.forEach(x=>lplace[x.id]=null);lorder=shuffleDifferent(labels.map(x=>x.id),lorder);wselected=null;wplace={lait:null,laiterie:null,magasin:null};worder=shuffleDifferent(words,worder);clearFeedback(4);render4()}qs('#reset4').onclick=reset4;qs('#check4').onclick=()=>{let all=true;labels.forEach(x=>{const el=qs(`[data-label="${x.id}"]`);const ok=lplace[x.id]===x.rank;el?.classList.remove('correct','wrong');el?.classList.add(ok?'correct':'wrong');if(!ok)all=false});qsa('.cloze').forEach(c=>{const ok=wplace[c.dataset.slot]===c.dataset.slot;c.classList.remove('correct','wrong');c.classList.add(ok?'correct':'wrong');if(!ok)all=false});if(!all){state[4].error=true;feedback(4,'bad','La trace écrite n’est pas encore entièrement correcte. Corrige, puis réinitialise l’étape pour tenter un sans-faute.');return}if(state[4].error)feedback(4,'train','La trace est maintenant correcte. Réinitialise-la et réussis-la sans erreur pour la valider.');else{feedback(4,'ok','Sans-faute ! La trace écrite est complète. Mission accomplie !');complete(4)}};
+function reset4(){state[4].error=false;lselected=null;lplace={};labels.forEach(x=>lplace[x.id]=null);lorder=shuffleDifferent(labels.map(x=>x.id),lorder);wselected=null;wplace={lait:null,laiterie:null,magasin:null};worder=shuffleDifferent(words,worder);clearFeedback(4);render4()}qs('#reset4').onclick=reset4;qs('#check4').onclick=()=>{let all=true;
+labels.forEach(x=>{
+  const el=qs(`[data-label="${x.id}"]`);
+  const slot=qs(`.trace-slot[data-rank="${x.rank}"]`);
+  const ok=lplace[x.id]===x.rank;
+  el?.classList.remove('correct','wrong');
+  el?.classList.add(ok?'correct':'wrong');
+  if(slot){
+    slot.classList.remove('correct','wrong');
+    const occupant=Object.keys(lplace).find(id=>lplace[id]===x.rank);
+    const slotOk=occupant===x.id;
+    slot.classList.add(slotOk?'correct':'wrong');
+  }
+  if(!ok)all=false
+});
+qsa('.cloze').forEach(c=>{
+  const ok=wplace[c.dataset.slot]===c.dataset.slot;
+  c.classList.remove('correct','wrong');
+  c.classList.add(ok?'correct':'wrong');
+  if(!ok)all=false
+});
+if(!all){
+  state[4].error=true;
+  feedback(4,'bad','La trace écrite n’est pas encore entièrement correcte. Les mots mal placés apparaissent en rouge. Corrige, puis réinitialise l’étape pour tenter un sans-faute.');
+  return
+}
+if(state[4].error)feedback(4,'train','La trace est maintenant correcte. Réinitialise-la et réussis-la sans erreur pour la valider.');
+else{feedback(4,'ok','Sans-faute ! La trace écrite est complète. Mission accomplie !');complete(4)}
+};
 
 addStaticSpeakers();reset1();reset2();reset3();reset4();
