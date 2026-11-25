@@ -1,1 +1,47 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#176b78"><title>La chaîne de production du yaourt - CM1</title><link rel="stylesheet" href="styles.css?v=3"></head>
+<body>
+<header class="hero"><div class="hero__inner"><div class="hero__copy readable"><p class="eyebrow">GÉOGRAPHIE CM1 · SE NOURRIR</p><h1>La chaîne de production du yaourt</h1><p>De la ferme au magasin, retrouve les personnes, les lieux et les étapes qui permettent de fabriquer un yaourt.</p></div><img src="globe.svg" class="hero__art" alt=""></div></header>
+<main class="shell">
+<nav class="tabs" aria-label="Étapes du jeu">
+<button class="tab is-active" data-go="1"><span>1</span><div><b>Les métiers</b><small>Qui fait quoi ?</small></div><em data-status="1">À faire</em></button>
+<button class="tab" data-go="2" disabled><span>2</span><div><b>Les 8 étapes</b><small>Remettre les images dans l’ordre</small></div><em data-status="2">Verrouillé</em></button>
+<button class="tab" data-go="3" disabled><span>3</span><div><b>Comprendre la chaîne</b><small>Raisonner avec les témoignages</small></div><em data-status="3">Verrouillé</em></button>
+<button class="tab" data-go="4" disabled><span>4</span><div><b>La trace écrite</b><small>Reconstituer de mémoire</small></div><em data-status="4">Verrouillé</em></button>
+</nav>
+<aside class="rule readable"><strong>Règle du sans-faute :</strong> tu peux corriger tes erreurs pour apprendre, mais une étape n’est validée que si tu la réussis entièrement sans erreur au cours d’une même tentative, puis que tu cliques sur <b>Vérifier</b>. Après une erreur, réinitialise l’étape avant de tenter la validation.</aside>
 
+<section id="stage1" class="stage">
+<div class="stage-head"><div class="readable"><p class="kicker">ÉTAPE 1</p><h2>Les métiers de la chaîne</h2><p>Lis les témoignages puis attribue chaque action à la bonne personne. Touche une action puis le personnage correspondant. Une action déjà placée peut être retirée.</p></div><div class="head-icon">👥</div></div>
+<details class="docs"><summary>Consulter les quatre témoignages</summary><div class="witness-grid">
+<article class="witness readable"><img src="marc.webp" alt="Marc à la ferme"><h3>Marc - éleveur de vaches laitières</h3><p>Chaque jour, il nourrit ses vaches, vérifie leur santé et nettoie leur espace. Deux fois par jour, il fait la traite. Le lait est ensuite stocké dans un grand réservoir réfrigéré pour rester frais et propre.</p></article>
+<article class="witness readable"><img src="nadia.webp" alt="Nadia avec son camion-citerne"><h3>Nadia - conductrice de camion-citerne</h3><p>Elle vient chercher le lait à la ferme de Marc. Son camion le maintient à une température froide pour éviter qu’il ne s’abîme, puis elle le transporte jusqu’à la laiterie.</p></article>
+<article class="witness readable"><img src="julien.webp" alt="Julien dans la laiterie"><h3>Julien - employé de la laiterie</h3><p>À la laiterie, le lait est transformé en yaourt : il est chauffé, on ajoute des ferments, puis le yaourt est mis en pots, fermé, étiqueté et stocké au frais avant l’envoi.</p></article>
+<article class="witness readable"><img src="sophie.webp" alt="Sophie au supermarché"><h3>Sophie - employée du supermarché</h3><p>Elle reçoit les yaourts, les met en rayon dans les réfrigérateurs et vérifie les dates de péremption.</p></article>
+</div></details>
+<h3 class="bank-title">Actions à attribuer <small>- ordre mélangé</small></h3><div id="action-bank" class="action-bank"></div>
+<div id="people-zones" class="people-zones"></div>
+<div class="actions"><button class="btn primary" id="check1">Vérifier</button><button class="btn secondary" id="reset1">Réinitialiser l’étape</button></div><div id="feedback1" class="feedback" aria-live="polite"></div>
+</section>
+
+<section id="stage2" class="stage hidden">
+<div class="stage-head"><div class="readable"><p class="kicker">ÉTAPE 2</p><h2>Remets les 8 étapes dans l’ordre</h2><p>Les images viennent de la trace écrite, mais les numéros et les légendes ont disparu. Touche une image puis une place de 1 à 8. Tu peux retirer une image déjà placée.</p></div><div class="head-icon">🔢</div></div>
+<div id="step-bank" class="step-bank"></div><div id="step-slots" class="step-slots"></div>
+<div class="actions"><button class="btn primary" id="check2">Vérifier</button><button class="btn secondary" id="reset2">Réinitialiser l’étape</button></div><div id="feedback2" class="feedback" aria-live="polite"></div>
+</section>
+
+<section id="stage3" class="stage hidden">
+<div class="stage-head"><div class="readable"><p class="kicker">ÉTAPE 3</p><h2>Comprendre la chaîne de production</h2><p>Utilise ce que tu as compris des témoignages et de l’ordre des étapes. Les questions et les réponses sont mélangées à chaque tentative.</p></div><div class="head-icon">🧠</div></div>
+<div id="reasoning-list" class="reasoning-list"></div>
+<div class="actions"><button class="btn primary" id="check3">Vérifier</button><button class="btn secondary" id="reset3">Réinitialiser l’étape</button></div><div id="feedback3" class="feedback" aria-live="polite"></div>
+</section>
+
+<section id="stage4" class="stage hidden">
+<div class="stage-head"><div class="readable"><p class="kicker">ÉTAPE 4 · TRACE ÉCRITE</p><h2>Reconstitue la trace écrite</h2><p>Replace les huit légendes dans l’ordre, puis complète la phrase de synthèse. Les mots et les légendes sont mélangés à chaque tentative.</p></div><div class="head-icon">✎</div></div>
+<h3>A. Les huit étapes</h3><div id="label-bank" class="label-bank"></div><div id="trace-slots" class="trace-slots"></div>
+<h3 class="summary-title">B. La phrase à compléter</h3><div id="summary-bank" class="summary-bank"></div><p class="summary-sentence readable">Le yaourt est fabriqué à partir du <button class="cloze" data-slot="lait">…</button>, transformé à la <button class="cloze" data-slot="laiterie">…</button>, puis envoyé au <button class="cloze" data-slot="magasin">…</button>.</p>
+<div class="actions"><button class="btn primary" id="check4">Vérifier</button><button class="btn secondary" id="reset4">Réinitialiser l’étape</button></div><div id="feedback4" class="feedback" aria-live="polite"></div>
+</section>
+
+<section id="final" class="final hidden"><div class="star">★</div><div class="readable"><p class="kicker">MISSION RÉUSSIE</p><h2>Bravo !</h2><p>Tu sais expliquer la chaîne de production d’un yaourt, de la traite jusqu’au magasin.</p></div><img src="trace-complete.webp" alt="Trace écrite complète des huit étapes de fabrication du yaourt"></section>
+</main><footer>Géographie CM1 · Se nourrir · La chaîne de production du yaourt</footer><script src="app.js?v=3"></script><script src="speech.js?v=3"></script></body></html>
